@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+ /* Gradient Variables */
+ --gradient-button: linear-gradient(270deg, rgba(240,166,71,1) 0%, rgba(252,206,139,1) 72%, rgba(255,217,157,1) 100%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-hamo: #ff5722;
+  --font-cairo: var(--font-cairo);
+  --font-exo: var(--font-exo);
+}
+
+@layer utilities {
+  .bg-gradient-button {
+    background: var(--gradient-button);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+  animation-delay: var(--animation-delay, 0ms);
+}
+body{
+  background-color: #fdfef9;
+  font-family: var(--font-cairo), var(--font-exo);
+}
+
+@theme {
+  --breakpoint-xs: 30rem;    
+}
+body{
+  /* height: 5000px; */
+}
+
+@utility max-500 {
+  @media (max-width: 500px) {
+    @apply bg-red-500 text-white p-4;
+  }
+}
+
+/* swiper custom styles for testimonials section */
+.testimonials-swiper {
+  padding-bottom: 50px;
+}
+
+.testimonials-swiper .swiper-button-next,
+.testimonials-swiper .swiper-button-prev {
+  color: #f0a647;
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.testimonials-swiper .swiper-button-next:hover,
+.testimonials-swiper .swiper-button-prev:hover {
+  background: #f0a647;
+  color: white;
+  transform: scale(1.1);
+}
+
+.testimonials-swiper .swiper-button-next::after,
+.testimonials-swiper .swiper-button-prev::after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.testimonials-swiper .swiper-pagination-bullet {
+  background: #f0a647;
+  opacity: 0.3;
+  width: 12px;
+  height: 11px;
+  transition: all 0.3s ease;
+}
+
+.testimonials-swiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #f0a647;
+  transform: scale(1.2);
+}
+
+.testimonials-swiper .swiper-slide {
+  height: auto;
+}
+
+.testimonials-swiper .swiper-pagination-bullet {
+  transition: all .9s ease !important;
+}
+
+.testimonials-swiper .swiper-pagination-bullet-active {
+  width: 32px;
+  border-radius:8px !important;
+  background: linear-gradient(270deg, #F0A647 0%, #FCCE8B 72%, #FFD99D 100%) !important;
+  opacity: 1;
+  transition: width 1s ease, transform 0.3s ease, background 0.3s ease;
+
+
+}

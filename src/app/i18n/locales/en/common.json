@@ -1,0 +1,149 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About Us",
+    "blog": "Blog"
+  },
+  "header": {
+    "contact": "Contact Us",
+    "language": "English"
+  },
+  "contact": {
+    "title": "Contact"
+  },
+  "hero": {
+    "title": "We Make Your Ideas Real",
+    "subtitle": "Golden Dome Technology provides integrated digital solutions—from developing applications and smart systems to building platforms and advanced AI solutions—taking your project from a simple idea… to a real achievement."
+  },
+  "app": {
+    "title": "All your tasks, notes, ideas... in one app that understands you",
+    "download": "Download Zati App Now!",
+    "appStore": {
+      "available": "Available on the",
+      "name": "App Store"
+    },
+    "playStore": {
+      "available": "android app on",
+      "name": "Google Play"
+    }
+  },
+  "services": {
+    "title": "Our Services We Focus On",
+    "searchEngines": {
+      "title": "Search Engines",
+      "description": "This text can be placed on any design without problems, it won't look like copied text"
+    },
+    "motionGraphics": {
+      "title": "Motion Graphics",
+      "description": "This text can be placed on any design without problems, it won't look like copied text"
+    },
+    "mobileApps": {
+      "title": "Mobile Apps",
+      "description": "This text can be placed on any design without problems, it won't look like copied text"
+    },
+    "digitalMarketing": {
+      "title": "Digital Marketing",
+      "description": "This text can be placed on any design without problems, it won't look like copied text"
+    },
+    "webApps": {
+      "title": "Web Applications",
+      "description": "This text can be placed on any design without problems, it won't look like copied text"
+    }
+  },
+  "about": {
+    "title": "About Al Qoba Al Zahabia Company",
+    "description": "Software solutions in designing and programming websites and e-commerce stores, programming and designing Android and iPhone mobile applications, and providing digital marketing services from graphic design and video editing, motion graphics, 3D design and editing, and advertising photography",
+    "description2": "Our team specializes in transforming your creative idea into a tangible reality according to the latest software industries",
+    "description3": "We help you develop and plan your ideas with high precision by implementing them with all information technology systems",
+    "readMore": "Read More"
+  },
+  "projects": {
+    "title": "Projects",
+    "projectName": "Project Name",
+    "viewAll": "View All"
+  },
+  "pricing": {
+    "title": "Pricing Plans for Everyone",
+    "subtitle": "Choose the plan that suits you and benefit from our great features without complications.",
+    "serviceType": "Service Type",
+    "premium": {
+      "title": "Premium Package",
+      "price": "200",
+      "oldPrice": "347",
+      "currency": "AED",
+      "features": {
+        "unlimitedProducts": "Unlimited Products",
+        "update15min": "Price updates every 15 minutes",
+        "manualUpdate": "Manual price updates",
+        "googleMerchant": "Google Merchant Connection",
+        "priceBar": "Price Bar (Free)",
+        "pricePage": "Price Page (Free)"
+      },
+      "select": "Select Package"
+    },
+    "basic": {
+      "title": "Basic Package",
+      "price": "130",
+      "oldPrice": "260",
+      "currency": "AED",
+      "features": {
+        "upTo100": "Up to 100 products",
+        "update30min": "Price updates every 30 minutes",
+        "manualUpdate": "Manual price updates",
+        "googleMerchant": "Google Merchant Connection",
+        "priceBar": "Price Bar (Free)",
+        "pricePage": "Price Page (Free)"
+      },
+      "select": "Select Package"
+    }
+  },
+  "testimonials": {
+    "title": "Our Customer Reviews",
+    "ibrahim": {
+      "name": "Ibrahim Abdullah",
+      "text": "This text can be placed on any design without problems, it won't look like copied text, unorganized, uncoordinated, or even incomprehensible. Because it is still alternative and temporary text."
+    },
+    "mohammed": {
+      "name": "Mohammed Al Amari",
+      "text": "This text can be placed on any design without problems, it won't look like copied text, unorganized, uncoordinated, or even incomprehensible. Because it is still alternative and temporary text."
+    }
+  },
+  "footer": {
+    "description": "This placeholder text can fit any design without issues; it's temporary filler until final copy is ready.",
+    "newsletterTitle": "Subscribe to our newsletter to get the latest market updates",
+    "newsletterPlaceholder": "Email",
+    "newsletterButton": "Subscribe Now",
+    "sections": [
+      {
+        "title": "Pages",
+        "links": ["Home", "Services", "Projects", "Blog"]
+      },
+      {
+        "title": "Useful Links",
+        "links": ["FAQ", "Privacy Policy", "Terms & Conditions", "Contact Us"]
+      }
+    ],
+    "copyright": "© 2025. All rights reserved."
+  },
+  "chatbot": {
+    "verifyEmailTitle": "Please verify your email before using the chatbot",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "submit": "Submit",
+    "sending": "Sending...",
+    "errorTryAnotherEmail": "Please try another email",
+    "otpSent": "OTP sent to your email! Please check your inbox.",
+    "errorOccurred": "An error occurred",
+    "botGreeting": "Hello! How can I help you?",
+    "userMessage": "Hi, I need help.",
+    "inputPlaceholder": "Say something...",
+    "closeModal": "Close modal",
+    "closeChat": "Close chat",
+    "openChat": "Open chat"
+  }
+}
+
