@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from '../../app/i18n/client'
 import Image from 'next/image'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import mainLogo from '@/../public/assets/main-logo.svg'
 import ArabicFlag from '@/../public/assets/arabic-flag.svg'
 import { IoIosArrowDown } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
 import Button from "../ui/Button";
+import { languages as supportedLanguages } from '../../app/i18n/settings';
 const Header = ({ lng }) => {
   const { t } = useTranslation(lng);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,17 +42,25 @@ const Header = ({ lng }) => {
   const currentLanguage = languages.find(lang => lang.code === lng) || languages[0];
 
   const switchLanguage = (newLng) => {
-    const pathWithoutLang = pathname.replace(`/${lng}`, '') || '/';
-    router.push(`/${newLng}${pathWithoutLang}`);
+    const segments = pathname.split('/').filter(Boolean);
+    const pathWithoutLang = segments.filter(seg => !supportedLanguages.includes(seg)).join(' ');
+    const newPath = `/${newLng}${pathWithoutLang ? '/' + pathWithoutLang : ''}`;
+    router.push(newPath);
     setIsLanguageDropdownOpen(false);
   };
 
+  // get name of page from path name and check to make this as active link
+  const isActive = (path) => {
+    const currentPath = pathname.replace(`/${lng}`, '') || '/';
+    return currentPath === path;
+  };
+
   const navItems = [
-    { label: t('nav.home'), active: true },
-    { label: t('nav.services'), active: false },
-    { label: t('nav.projects'), active: false },
-    { label: t('nav.about'), active: false },
-    { label: t('nav.blog'), active: false },
+    { label: t('nav.home'), href: `/${lng}`, active: isActive('/') },
+    { label: t('nav.services'), href: `/${lng}/services`, active: isActive('/services') },
+    { label: t('nav.projects'), href: `/${lng}/projects`, active: isActive('/projects') },
+    { label: t('nav.about'), href: `/${lng}/about`, active: isActive('/about') },
+    { label: t('nav.blog'), href: `/${lng}/blog`, active: isActive('/blog') },
   ];
 
   const toggleMobileMenu = () => {
@@ -66,11 +76,13 @@ const Header = ({ lng }) => {
         <div className="container lg:max-w-[1150px] h-full mx-auto flex items-center justify-between flex-row-reverse ">
           {/* Desktop: Left section: Button-Contact /  Switich-Language */}
           <div className="hidden md:flex items-center gap-4 flex-row-reverse ">
-            <Button className="cursor-pointer w-[179px] h-12 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity">
-              <div className=" font-bold text-white text-xl text-center tracking-[0] leading-[normal] whitespace-nowrap ">
-                {t('header.contact')}
-              </div>
-            </Button>
+            <Link href={`/${lng}/contact`}>
+              <Button className="cursor-pointer w-[179px] h-12 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity">
+                <div className=" font-bold text-white text-xl text-center tracking-[0] leading-[normal] whitespace-nowrap ">
+                  {t('header.contact')}
+                </div>
+              </Button>
+            </Link>
 
             <div className="relative">
               <button
@@ -135,8 +147,9 @@ const Header = ({ lng }) => {
             {/* Navigation */}
             <nav className="flex items-center  lg:mr-9">
               {navItems.map((item, index) => (
-                <div
+                <Link
                   key={index}
+                  href={item.href}
                   className={`flex items-center justify-center h-10 px-4 ${item.active
                     ? "rounded-xl bg-[#FAB000] text-white"
                     : "text-[#868686]"
@@ -145,7 +158,7 @@ const Header = ({ lng }) => {
                   <div className=" font-medium md:text-[13px] lg:text-lg tracking-[0] leading-[normal] ">
                     {item.label}
                   </div>
-                </div>
+                </Link>
               ))}
             </nav>
             {/*  Logo */}
@@ -226,14 +239,15 @@ const Header = ({ lng }) => {
             <ul className="space-y-4">
               {/* Contact Button */}
               <li>
-                <button
+                <Link
+                  href={`/${lng}/contact`}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="cursor-pointer w-full h-12 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity mb-6"
+                  className="cursor-pointer w-full h-12 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity mb-6 flex items-center justify-center"
                 >
                   <div className=" font-bold text-white text-xl text-center tracking-[0] leading-[normal] whitespace-nowrap ">
                     {t('header.contact')}
                   </div>
-                </button>
+                </Link>
               </li>
 
               {/* Language Switcher */}
@@ -300,7 +314,8 @@ const Header = ({ lng }) => {
               {/* Navigation Items */}
               {navItems.map((item, index) => (
                 <li key={index} className="mb-0">
-                  <div
+                  <Link
+                    href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`block  font-medium text-xl py-3 px-4 rounded-lg transition-all duration-200 cursor-pointer ${
                       item.active
@@ -309,7 +324,7 @@ const Header = ({ lng }) => {
                     }`}
                   >
                     {item.label}
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>

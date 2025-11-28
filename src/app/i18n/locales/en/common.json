@@ -140,10 +140,13 @@
     "errorOccurred": "An error occurred",
     "botGreeting": "Hello! How can I help you?",
     "userMessage": "Hi, I need help.",
-    "inputPlaceholder": "Say something...",
+    "inputPlaceholder": "How can I help you?",
     "closeModal": "Close modal",
     "closeChat": "Close chat",
-    "openChat": "Open chat"
+    "openChat": "Open chat",
+    "notVerifiedMessage": "Please verify your email to use the chatbot.",
+    "enterEmailToVerify": "Enter your email to verify",
+    "tryAgain": "Please try again"
   }
 }
 

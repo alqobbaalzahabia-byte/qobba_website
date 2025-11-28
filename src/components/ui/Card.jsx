@@ -8,5 +8,8 @@ const Card = ({ className = "", children, ...props }) => {
   );
 };
 
+
+
+export { Card };
 export default Card;
 

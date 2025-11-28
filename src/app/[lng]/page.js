@@ -24,7 +24,7 @@ const App = ({ params }) => {
     >
 
       {/* Header Section */}
-      <Header t={t} lng={lng} />
+      {/* <Header t={t} lng={lng} /> */}
 
       {/* Hero Section */}
       <HeroSection t={t} lng={lng} />
@@ -45,7 +45,7 @@ const App = ({ params }) => {
       <TestimonialsSection t={t} lng={lng} />
 
       {/* Footer Section */}
-      <Footer t={t} lng={lng} />
+      {/* <Footer t={t} lng={lng} /> */}
 
       {/* ChatBot Component */}
       <ChatBot lng={lng} />

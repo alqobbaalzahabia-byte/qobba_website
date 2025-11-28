@@ -140,10 +140,13 @@
     "errorOccurred": "حدث خطأ",
     "botGreeting": "مرحباً! كيف يمكنني مساعدتك؟",
     "userMessage": "مرحباً، أحتاج مساعدة.",
-    "inputPlaceholder": "اكتب شيئاً...",
+    "inputPlaceholder": "كيف يمكنني مساعدتك؟",
     "closeModal": "إغلاق النافذة",
     "closeChat": "إغلاق المحادثة",
-    "openChat": "فتح المحادثة"
+    "openChat": "فتح المحادثة",
+    "notVerifiedMessage": "الرجاء التحقق من بريدك الإلكتروني لاستخدام البوت.",
+    "enterEmailToVerify": "أدخل بريدك الإلكتروني للتحقق",
+    "tryAgain": "الرجاء المحاولة مرة أخرى"
   }
 }
 

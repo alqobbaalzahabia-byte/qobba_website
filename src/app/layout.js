@@ -4,7 +4,8 @@ import { languages, fallbackLng } from "./i18n/settings";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 import localFont from 'next/font/local'
-
+import Header from "@/components/common/Header";
+import Footer from "@/components/common/Footer";
 // fonts (cairo and expo arabic )
 const cairoFont = localFont({
   src: [
@@ -51,12 +52,11 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const headersList = await headers();
   const lng = headersList.get('x-language') || fallbackLng;
-    
   return (
     <html lang={lng} dir={lng === 'ar' ? 'rtl' : 'ltr'}>
       <body className={`${cairoFont.variable} ${exoFont.variable}  antialiased`}>
         <Suspense fallback={
-          <div className="flex items-center justify-center min-h-screen bg-[#fdfef9]">
+          <div className=" absolute z-[500] top-0 left-0 w-full h-full flex items-center justify-center min-h-screen bg-[#fdfef9]">
             <div className="text-center">
               <img
                 className="w-[199px] h-[189px] mx-auto animate-pulse mb-8"
@@ -71,7 +71,9 @@ export default async function RootLayout({ children }) {
             </div>
           </div>
         }> 
+         {/* <Header lng={lng} /> */}
           {children}
+          {/* <Footer lng={lng} /> */}
         </Suspense>
       </body>
     </html>
