@@ -1,10 +1,8 @@
-'use client'
-
+import Image from 'next/image';
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import React, { use, useEffect, useState } from "react";
 import Button from '../../../components/ui/Button'
 import { Card } from "../../../components/ui/Card";
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase-server'
 
 const paginationDots = [
   { active: false },
@@ -13,40 +11,16 @@ const paginationDots = [
   { active: true },
 ];
 
- const Screen = ({ params }) => {
-  const { lng } = use(params);
-  const [blogs, setBlogs] = useState([]);
-  const [featuredBlog, setFeaturedBlog] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default async function BlogPage({ params }) {
+  const { lng } = await params;
+  const supabase = await createClient();
 
-  useEffect(() => {
-    async function fetchBlogs() {
-      try {
-        setLoading(true);
-        const { data, error: fetchError } = await supabase
-          .from('blogs')
-          .select('*')
-          .order('created_at', { ascending: false });
+  const { data: blogsData, error } = await supabase.from('blogs').select('*')
+    .order('created_at', { ascending: false });
 
-        if (fetchError) throw fetchError;
+  const featuredBlog = blogsData && blogsData.length > 0 ? blogsData[0] : null;
+  const blogs = blogsData && blogsData.length > 0 ? blogsData.slice(1) : [];
 
-        if (data && data.length > 0) {
-          setFeaturedBlog(data[0]);
-          setBlogs(data.slice(1));
-        }
-      } catch (err) {
-        console.error('Error fetching blogs:', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchBlogs();
-  }, []);
-
-  
   // Helper function to get localized text
   const getLocalizedText = (obj, fallback = '') => {
     if (!obj) return fallback;
@@ -54,101 +28,13 @@ const paginationDots = [
     return obj[lng] || obj.ar || obj.en || fallback;
   };
 
-  if (loading) {
-    return (
-      <div className="bg-[#fdfef9] overflow-hidden w-full min-h-[1584px] relative">
-        <main className="pt-[50px]">
-          <div className="container mx-auto lg:max-w-[1150px]">
-            {/* Featured Blog Skeleton */}
-            <section className="relative px-6">
-              <div className="w-full">
-                {/* Title Skeleton */}
-                <div className="h-[60px] mb-6">
-                  <div className="h-8 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
-                </div>
-                
-                <div className="content flex md:gap-10 lg:gap-20">
-                  {/* Right Box Skeleton */}
-                  <div className="box-right flex-1">
-                    <div className="pb-8 gap-4">
-                      <div className="h-[104px] mb-4">
-                        <div className="h-6 w-full bg-gray-200 rounded-lg animate-pulse mb-2"></div>
-                        <div className="h-6 w-3/4 bg-gray-200 rounded-lg animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Left Box Skeleton */}
-                  <div className="box-left flex-1">
-                    <div className="h-24 w-full bg-gray-200 rounded-lg animate-pulse mb-4"></div>
-                    <div className="h-10 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Main Blog Image Skeleton */}
-              <div className="main-blog mt-6">
-                <div className="w-full h-[508px] bg-gray-200 rounded-lg animate-pulse"></div>
-              </div>
-              
-              {/* Pagination Dots Skeleton */}
-              <div className="w-[116px] h-4 flex gap-3 pt-3 px-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className={`${i === 4 ? "w-8" : "w-4"} h-4 bg-gray-200 rounded-lg animate-pulse`}
-                  />
-                ))}
-              </div>
-            </section>
-
-            {/* Popular Articles Skeleton */}
-            <section className="relative mt-[80px] px-4 sm:px-6 lg:px-8">
-              {/* Heading Skeleton */}
-              <div className="mb-8">
-                <div className="h-10 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
-              </div>
-
-              {/* Article Cards Grid Skeleton */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                {[1, 2, 3, 4].map((index) => (
-                  <div
-                    key={index}
-                    className="w-full h-auto bg-[#ffffff1f] rounded-xl border border-solid border-white shadow-cards overflow-hidden"
-                  >
-                    <div className="p-0">
-                      {/* Image Skeleton */}
-                      <div className="w-full h-[200px] sm:h-[220px] lg:h-[246px] bg-gray-200 rounded-[11px_12px_0px_0px] animate-pulse"></div>
-                      <div className="p-4">
-                        {/* Title Skeleton */}
-                        <div className="h-6 w-full bg-gray-200 rounded-lg animate-pulse mb-2"></div>
-                        <div className="h-6 w-3/4 bg-gray-200 rounded-lg animate-pulse mb-3"></div>
-                        {/* Description Skeleton */}
-                        <div className="h-4 w-full bg-gray-200 rounded-lg animate-pulse mb-2"></div>
-                        <div className="h-4 w-5/6 bg-gray-200 rounded-lg animate-pulse"></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Navigation Buttons Skeleton */}
-              <div className="flex gap-4 mt-8">
-                <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse"></div>
-                <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse"></div>
-              </div>
-            </section>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="bg-[#fdfef9] overflow-hidden w-full min-h-screen relative flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 text-xl">Error: {error}</p>
+          <p className="text-red-600 text-xl">
+            {lng === 'ar' ? 'حدث خطأ أثناء تحميل المدونة' : 'Error loading blog'}
+          </p>
         </div>
       </div>
     );
@@ -200,12 +86,13 @@ const paginationDots = [
             </div>
               </div>
               <div className="main-blog">
-                
-                <img
-                className="w-[1152px] h-[508px] rounded-lg object-cover"
-                alt={getLocalizedText(featuredBlog.title)}
-                src={featuredBlog.image || "https://c.animaapp.com/mihru5swI146K5/img/rectangle-18673.png"}
-              />
+                <Image
+                  width={1152}
+                  height={508}
+                  className="w-[1152px] h-[508px] rounded-lg object-cover"
+                  alt={getLocalizedText(featuredBlog.title)}
+                  src={featuredBlog.image || "https://c.animaapp.com/mihru5swI146K5/img/rectangle-18673.png"}
+                />
               </div>          
 
               <div className="w-[116px] h-4 flex gap-3 pt-3 px-2">
@@ -233,7 +120,9 @@ const paginationDots = [
                   className="w-full h-auto bg-[#ffffff1f] rounded-xl border border-solid border-white shadow-cards overflow-hidden transition-transform hover:scale-105 cursor-pointer"
                 >
                   <div className="p-0">
-                    <img
+                    <Image
+                      width={300}
+                      height={246}
                       className="w-full h-[200px] sm:h-[220px] lg:h-[246px] rounded-[11px_12px_0px_0px] object-cover"
                       alt={getLocalizedText(blog.title)}
                       src={blog.image || "https://c.animaapp.com/mihru5swI146K5/img/rectangle-18679.png"}
@@ -283,6 +172,4 @@ const paginationDots = [
 
     </div>
   );
-};
-
-export default Screen;
+}

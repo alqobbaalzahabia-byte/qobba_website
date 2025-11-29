@@ -147,6 +147,11 @@
     "notVerifiedMessage": "Please verify your email to use the chatbot.",
     "enterEmailToVerify": "Enter your email to verify",
     "tryAgain": "Please try again"
+  },
+  "clients": {
+    "title": "Our Clients",
+    "back": "Back",
+    "showMore": "Show More "
   }
 }
 
