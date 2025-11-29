@@ -3,6 +3,7 @@ import { fallbackLng, languages } from '../i18n/settings'
 import { useTranslation } from '../i18n/index'
 import Header from '@/components/common/Header'
 import Footer from '@/components/common/Footer'
+import ChatBot from '@/components/common/ChatBot'
 export default async function Layout({ children, params }) {
   const { lng } = await params
   const language = languages.indexOf(lng) < 0 ? fallbackLng : lng
@@ -15,6 +16,7 @@ export default async function Layout({ children, params }) {
         <div className='content flex-1'>
           {children}
         </div>
+        <ChatBot lng={lng} />
         <Footer t={t} lng={lng} />
       </div>
 
