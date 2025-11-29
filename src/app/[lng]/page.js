@@ -23,9 +23,6 @@ const App = ({ params }) => {
       data-model-id="52:1826"
     >
 
-      {/* Header Section */}
-      {/* <Header t={t} lng={lng} /> */}
-
       {/* Hero Section */}
       <HeroSection t={t} lng={lng} />
 
@@ -43,9 +40,6 @@ const App = ({ params }) => {
 
       {/* Testimonials Section */}
       <TestimonialsSection t={t} lng={lng} />
-
-      {/* Footer Section */}
-      {/* <Footer t={t} lng={lng} /> */}
 
       {/* ChatBot Component */}
       <ChatBot lng={lng} />

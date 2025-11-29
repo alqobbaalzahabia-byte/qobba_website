@@ -3,6 +3,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Button from '../../../components/ui/Button'
 import { Card } from "../../../components/ui/Card";
 import { createClient } from '@/lib/supabase-server'
+import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 
 const paginationDots = [
   { active: false },
@@ -42,7 +43,7 @@ export default async function BlogPage({ params }) {
 
   return (
     <div
-      className="bg-[#fdfef9] overflow-hidden w-full  min-h-[1584px] relative"
+      className="bg-[#fdfef9] overflow-hidden w-full min-h-screen relative"
       data-model-id="58:1871"
     >
       <main className="pt-[50px]">
@@ -54,12 +55,10 @@ export default async function BlogPage({ params }) {
                 <h1 className=" h-[60px]  font-bold text-[#172436] text-[32px] leading-[normal] tracking-[0] ">
                   {lng === 'ar' ? 'المدونة' : 'Blog'}
                 </h1>
-                <div className="content  flex  md:gap-10  lg:gap-20">
+                <div className="content  flex flex-wrap md:flex-nowrap  md:gap-10  lg:gap-20">
                 <div className="box-right">
                 <div className="pb-8 gap-4">
-                
-
-                <p className="h-[104px]  font-normal text-transparent text-[28px] tracking-[0] leading-7 ">
+                <p className="font-normal text-transparent text-[28px] tracking-[0] leading-7 ">
                   <span className="font-medium text-[#4b4b4b]">
                     {getLocalizedText(featuredBlog.title)}
                   </span>
@@ -69,7 +68,7 @@ export default async function BlogPage({ params }) {
                 </div>
             
                 <div className="box-left">
-              <p className="w-[567px]  font-normal text-[#585858] text-xl leading-7 tracking-[0] ">
+              <p className="md:w-[567px]  font-normal text-[#585858] text-xl leading-7 tracking-[0] ">
                 {getLocalizedText(featuredBlog.description)}
               </p>
 
@@ -78,13 +77,14 @@ export default async function BlogPage({ params }) {
                 className="h-auto flex items-center justify-end gap-2.5 rounded-lg hover:bg-transparent transition-colors group"
               >
                 <FiChevronLeft className="w-7 h-7 text-[#f0a647] transition-transform" />
-                <span className="font-cairo-med-20 font-[number:var(--cairo-med-20-font-weight)] text-[#f0a647] text-[length:var(--cairo-med-20-font-size)] leading-[var(--cairo-med-20-line-height)] tracking-[var(--cairo-med-20-letter-spacing)]  [font-style:var(--cairo-med-20-font-style)]">
+                <span className="cursor-pointer font-cairo-med-20  text-[#f0a647]">
                   {lng === 'ar' ? 'عرض المزيد' : 'Read More'}
                 </span>
               </Button>
               </div>
             </div>
               </div>
+
               <div className="main-blog">
                 <Image
                   width={1152}
@@ -123,17 +123,17 @@ export default async function BlogPage({ params }) {
                     <Image
                       width={300}
                       height={246}
-                      className="w-full h-[200px] sm:h-[220px] lg:h-[246px] rounded-[11px_12px_0px_0px] object-cover"
+                      className="w-full h-[200px] sm:h-[220px] lg:h-[246px] rounded-[11px_12px_0px_0px] object-cover "
                       alt={getLocalizedText(blog.title)}
-                      src={blog.image || "https://c.animaapp.com/mihru5swI146K5/img/rectangle-18679.png"}
+                      src={blog.image}
                     />
                     <div className="p-4">
-                      <h3 className="min-h-[26px] flex items-center justify-center  font-normal text-transparent text-sm leading-[normal] tracking-[0]  mb-2">
-                        <span className="font-bold text-[#4b4b4b]">
+                      <h3 className="min-h-[26px] flex items-center font-normal text-transparent text-sm leading-[normal] tracking-[0]  mb-2 ">
+                        <span className="font-bold text-[#4b4b4b] line-clamp-1">
                           {getLocalizedText(blog.title)}
                         </span>
                       </h3>
-                      <p className=" font-normal text-[#585858] text-sm leading-[normal] tracking-[0] ">
+                      <p className=" font-normal text-[#585858] text-sm leading-[normal] tracking-[0] line-clamp-3 ">
                         {getLocalizedText(blog.description)}
                       </p>
                     </div>
@@ -155,7 +155,7 @@ export default async function BlogPage({ params }) {
               size="icon"
               className="cursor-pointer w-12 h-12 rounded-full bg-[#f0a647]  transition-colors"
             >
-              <FiChevronLeft className="w-6 h-6 text-white" />
+              <HiOutlineArrowNarrowRight className="w-6 h-6 text-white rotate-360" />
             </Button>
 
             <Button
@@ -163,7 +163,7 @@ export default async function BlogPage({ params }) {
               size="icon"
               className="cursor-pointer w-12 h-12 rounded-full bg-[#f0a647]  transition-colors"
             >
-              <FiChevronRight className="w-6 h-6 text-white" />
+              <HiOutlineArrowNarrowRight className="w-6 h-6 text-white rotate-180" />
             </Button>
           </div>
         </section>

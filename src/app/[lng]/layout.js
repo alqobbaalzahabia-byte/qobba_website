@@ -10,10 +10,14 @@ export default async function Layout({ children, params }) {
 
   return (
     <I18nextProvider lng={language}>
+      <div className='wrapper flex flex-col'>
+        <Header lng={lng} />
+        <div className='content flex-1'>
+          {children}
+        </div>
+        <Footer t={t} lng={lng} />
+      </div>
 
-      <Header lng={lng} />
-      {children}
-      <Footer t={t} lng={lng} />
 
     </I18nextProvider>
   )
