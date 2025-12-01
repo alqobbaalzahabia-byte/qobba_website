@@ -14,9 +14,8 @@ const socialLinks = [
 const Footer = ({ t = (key) => key, lng = 'ar' }) => {
   const sections = t('footer.sections', { returnObjects: true });  
   const footerSections = Array.isArray(sections) ? sections : [];
-
   return (
-    <footer className="bg-[#4B381E] text-white ">
+    <footer className="bg-[linear-gradient(180deg,rgba(243,243,243,1)_0%,rgba(255,249,236,1)_100%)]  ">
       <div className="container mx-auto lg:max-w-[1100px] px-4 sm:px-2 py-4 gap-10 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 ">
         <div className=" lg:col-span-2 items-center">
           <div className="space-y-4">
@@ -30,10 +29,10 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
                 quality={90}
               />
             </div>
-            <p className="text-sm md:text-[18px] text-white bg-opacity-60 rounded-lg py-3 leading-7">
+            <p className="text-sm md:text-[18px] text-[#585858] bg-opacity-60 rounded-lg py-3 leading-7">
               {t('footer.description')}
             </p>
-            <h2 className="text-2xl font-semibold pb-5 text-white">
+            <h2 className="text-2xl font-semibold pb-5 text-[#585858]">
               {t('footer.newsletterTitle')}
             </h2>
           </div>
@@ -44,7 +43,7 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
                 id="newsletter-email"
                 type="email"
                 placeholder={t('footer.newsletterPlaceholder')}
-                className="w-full rounded-xl border border-white/30 bg-transparent px-4 py-3 text-sm text-white placeholder:text-white/60 focus:border-white focus:outline-none"
+                className="w-full rounded-xl border border-white/30 bg-[#FFFFFF] px-4 py-3 text-sm text-[#585858] placeholder:text-[#585858]/60 focus:border-white focus:outline-none"
               />
               <button
                 type="submit"
@@ -64,10 +63,10 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
             return (
             <div key={section.title} className="  sm:min-w-[250px] lg:min-w-[150px] space-y-4">
               <p className="text-lg font-semibold">{section.title}</p>
-              <ul className="space-y-2 text-sm text-white/80">
+              <ul className="space-y-2 text-sm text-[#585858]/80">
                 {links.map((link) => (
                   <li key={link}>
-                    <a href="#" className="transition hover:text-white">
+                    <a href="#" className="transition hover:text-[#585858]">
                       {link}
                     </a>
                   </li>
@@ -76,7 +75,7 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
             </div>
           )})}
 
-          <div className="ml-auto flex flex-col gap-4 text-sm text-white/80 hidden">
+          <div className="ml-auto flex flex-col gap-4 text-sm text-[#585858]/80 hidden">
             <p>{t('footer.copyright')}</p>
             <div className="flex items-center gap-4">
               {socialLinks.map((social) => (
@@ -98,14 +97,14 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
       <div className="border-b border-white/10">  
       </div>
       <div className="container mx-auto lg:max-w-[1100px] px-4 sm:px-2 py-4">
-      <div className="ml-auto flex justify-between items-center gap-4 text-sm text-white/80 ">
+      <div className="ml-auto flex justify-between items-center gap-4 text-sm  ">
             <p className={`${lng === 'ar' ? '-order-8' : ''}`}>{t('footer.copyright')}</p>
             <div className="flex items-center gap-4">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href="#"
-                  className="rounded-full border bg-[#F0A647] border-white/30 p-2 transition hover:border-white hover:bg-white/10"
+                  className="rounded-full border bg-[#F0A647] text-white border-white/30 p-2 transition hover:border-white hover:text-[#F0A647] hover:bg-gray-200"
                 >
                   <span className="sr-only">{social.label}</span>
                   {social.icon}

@@ -150,6 +150,11 @@
   },
 
 
+  "clients": {
+    "title": "Our Clients",
+    "back": "Back",
+    "showMore": "Show More "
+  },
 
   "contactUs": {
     "title": "Contact",
