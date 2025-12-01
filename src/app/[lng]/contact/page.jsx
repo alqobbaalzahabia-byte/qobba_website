@@ -5,10 +5,20 @@ import { FiMail, FiPhone, FiSend } from "react-icons/fi";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import mainLogo from "@/../public/assets/main-logo.svg";
+import { useTranslation } from "@/app/i18n/client";
 
 const Screen = ({ params }) => {
   const { lng } = use(params);
+  const { t } = useTranslation(lng, 'common');
+  
   const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState({
     name: "",
     email: "",
     phone: "",
@@ -18,29 +28,82 @@ const Screen = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
+  const validationRules = {
+    name: { required: true, maxLength: 100 },
+    email: { required: true, maxLength: 254, pattern:/^[a-zA-Z0-9](\.?[a-zA-Z0-9_-])*@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/},
+    phone: { required: false, maxLength: 20, pattern: /^[+\d\s()-]+$/ },
+    subject: { required: true, maxLength: 150 },
+    message: { required: true, maxLength: 500 },
+  };
+
+  const validateField = (name, value) => {
+    const rules = validationRules[name];
+    value = value.trim();
+    
+    if (rules.required && !value.trim()) {
+      return t('contactUs.fieldRequired');
+    }
+
+    if (value && rules.maxLength && value.length > rules.maxLength) {
+      return t('contactUs.maxCharacters', { count: rules.maxLength });
+    }
+
+    if (name === "email" && value && !rules.pattern.test(value)) {
+      return t('contactUs.validEmail');
+    }
+
+    if (name === "phone" && value && !rules.pattern.test(value)) {
+      return t('contactUs.validPhone');
+    }
+
+    return "";
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    const error = validateField(name, value);
+    
+    setErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
+  };
+
+  const validateAllFields = () => {
+    const newErrors = {};
+    let isValid = true;
+
+    Object.keys(formData).forEach((field) => {
+      const error = validateField(field, formData[field]);
+      if (error) {
+        newErrors[field] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = async () => {
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.subject ||
-      !formData.message
-    ) {
+    if (!validateAllFields()) {
       setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus(null), 3000);
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setSubmitStatus("invalid_email");
       setTimeout(() => setSubmitStatus(null), 3000);
       return;
     }
@@ -69,6 +132,13 @@ const Screen = ({ params }) => {
         subject: "",
         message: "",
       });
+      setErrors({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
 
       setTimeout(() => setSubmitStatus(null), 5000);
     } catch (error) {
@@ -85,34 +155,17 @@ const Screen = ({ params }) => {
       case "success":
         return {
           type: "success",
-          text:
-            lng === "ar"
-              ? "تم إرسال رسالتك بنجاح! سنتواصل معك قريباً."
-              : "Message sent successfully! We'll get back to you soon.",
+          text: t('contactUs.successMessage')
         };
       case "error":
         return {
           type: "error",
-          text:
-            lng === "ar"
-              ? "يرجى ملء جميع الحقول المطلوبة"
-              : "Please fill in all required fields",
-        };
-      case "invalid_email":
-        return {
-          type: "error",
-          text:
-            lng === "ar"
-              ? "يرجى إدخال عنوان بريد إلكتروني صالح"
-              : "Please enter a valid email address",
+          text: t('contactUs.errorMessage')
         };
       case "submission_error":
         return {
           type: "error",
-          text:
-            lng === "ar"
-              ? "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى."
-              : "An error occurred while sending the message. Please try again.",
+          text: t('contactUs.submissionError')
         };
       default:
         return null;
@@ -123,32 +176,23 @@ const Screen = ({ params }) => {
 
   const agents = [
     {
-      country: lng === "ar" ? "الإمارات" : "United Arab Emirates",
-      agentName: lng === "ar" ? "فرع دبي" : "Dubai Branch",
-      description:
-        lng === "ar"
-          ? "نقدم خدماتنا لعملائنا في مختلف أنحاء الإمارات من خلال فريق متخصص يقدم الدعم والتواصل بشكل احترافي وسريع."
-          : "We serve clients across the UAE with a dedicated team providing professional and responsive support.",
+      country: t('contactUs.agents.dubai.country'),
+      agentName: t('contactUs.agents.dubai.name'),
+      description: t('contactUs.agents.dubai.description'),
       email: "info@alqoba.ae",
       phone: "+971 50 123 4567",
     },
     {
-      country: lng === "ar" ? "الإمارات" : "United Arab Emirates",
-      agentName: lng === "ar" ? "فرع أبوظبي" : "Abu Dhabi Branch",
-      description:
-        lng === "ar"
-          ? "يعمل فريقنا في أبوظبي على ضمان تقديم أفضل الخدمات لعملائنا في العاصمة والمناطق المحيطة."
-          : "Our Abu Dhabi team ensures high-quality service for clients in the capital and surrounding areas.",
+      country: t('contactUs.agents.abudhabi.country'),
+      agentName: t('contactUs.agents.abudhabi.name'),
+      description: t('contactUs.agents.abudhabi.description'),
       email: "support@alqoba.ae",
       phone: "+971 52 987 6543",
     },
     {
-      country: lng === "ar" ? "الإمارات" : "United Arab Emirates",
-      agentName: lng === "ar" ? "فرع الشارقة" : "Sharjah Branch",
-      description:
-        lng === "ar"
-          ? "يدعم فريق الشارقة عملياتنا في شمال الإمارات ويقدم حلولاً سريعة وفعالة."
-          : "The Sharjah team supports operations across Northern UAE, delivering fast and reliable solutions.",
+      country: t('contactUs.agents.sharjah.country'),
+      agentName: t('contactUs.agents.sharjah.name'),
+      description: t('contactUs.agents.sharjah.description'),
       email: "contact@alqoba.ae",
       phone: "+971 55 778 3344",
     },
@@ -160,7 +204,7 @@ const Screen = ({ params }) => {
         <div className="container mx-auto lg:max-w-[1150px] px-4 sm:px-6">
           <div className="mb-12">
             <h1 className="font-bold text-[#172436] text-3xl sm:text-[32px] leading-normal tracking-[0]">
-              {lng === "ar" ? "تواصل" : "Contact"}
+              {t('contactUs.title')}
             </h1>
           </div>
 
@@ -168,25 +212,24 @@ const Screen = ({ params }) => {
             <section className="relative translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
               <div className="mb-12">
                 <h2 className="font-semibold text-[#f0a647] text-xl sm:text-2xl leading-normal tracking-[0] mb-4">
-                  {lng === "ar" ? "تواصل معنا" : "Contact With Us"}
+                  {t('contactUs.contactWithUs')}
                 </h2>
                 <p className="font-normal text-[#585858] text-base sm:text-lg leading-7 tracking-[0] max-w-[500px]">
-                  {lng === "ar"
-                    ? "نحن هنا لمساعدتك. تواصل معنا وسنرد عليك في أقرب وقت ممكن."
-                    : "We're here to help. Get in touch with us and we'll respond as soon as possible."}
+                  {t('contactUs.contactDescription')}
                 </p>
               </div>
 
               <div className="space-y-8">
                 <div>
                   <h3 className="font-bold text-[#172436] text-lg sm:text-xl mb-3">
-                    {lng === "ar" ? "تواصل عبر الهاتف" : "Contact With Phone"}
+                    {t('contactUs.contactWithPhone')}
                   </h3>
                   <div className="flex items-center gap-3">
                     <FiPhone className="w-5 h-5 text-[#f0a647]" />
                     <a
                       href="tel:+971509714136"
                       className="text-[#172436] hover:text-[#f0a647] transition-colors text-base sm:text-lg font-medium"
+                      dir="ltr"
                     >
                       +971 50 97 14136
                     </a>
@@ -195,9 +238,7 @@ const Screen = ({ params }) => {
 
                 <div>
                   <h3 className="font-bold text-[#172436] text-lg sm:text-xl mb-3">
-                    {lng === "ar"
-                      ? "تواصل عبر واتساب"
-                      : "Contact With WhatsApp"}
+                    {t('contactUs.contactWithWhatsApp')}
                   </h3>
                   <div className="flex items-center gap-3">
                     <svg
@@ -212,6 +253,7 @@ const Screen = ({ params }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#172436] hover:text-[#25D366] transition-colors text-base sm:text-lg font-medium"
+                      dir="ltr"
                     >
                       +971 50 97 14136
                     </a>
@@ -220,15 +262,14 @@ const Screen = ({ params }) => {
 
                 <div>
                   <h3 className="font-bold text-[#172436] text-lg sm:text-xl mb-3">
-                    {lng === "ar"
-                      ? "تواصل عبر البريد الإلكتروني"
-                      : "Contact With Email"}
+                    {t('contactUs.contactWithEmail')}
                   </h3>
                   <div className="flex items-center gap-3">
                     <FiMail className="w-5 h-5 text-[#f0a647]" />
                     <a
                       href="mailto:alqobaalzahabia@gmail.com"
                       className="text-[#172436] hover:text-[#f0a647] transition-colors text-base sm:text-lg font-medium break-words"
+                      dir="ltr"
                     >
                       alqobaalzahabia@gmail.com
                     </a>
@@ -256,7 +297,7 @@ const Screen = ({ params }) => {
             <section className="relative translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
               <div className="bg-[#fef9f0] rounded-xl border border-[#d3d3d3]/30 shadow-lg p-6 sm:p-8">
                 <h2 className="font-bold text-[#f0a647] text-xl sm:text-2xl mb-6">
-                  {lng === "ar" ? "أرسل لنا رسالة" : "Send us a Message"}
+                  {t('contactUs.sendMessage')}
                 </h2>
 
                 {statusMessage && (
@@ -282,93 +323,121 @@ const Screen = ({ params }) => {
                 <div className="space-y-5">
                   <div>
                     <label className="block text-[#172436] font-medium mb-2 text-sm">
-                      {lng === "ar" ? "الاسم الكامل" : "Full Name"}{" "}
-                      <span className="text-red-500">*</span>
+                      {t('contactUs.fullName')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       disabled={loading}
-                      className="w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white"
-                      placeholder={
-                        lng === "ar"
-                          ? "أدخل اسمك الكامل"
-                          : "Enter your full name"
-                      }
+                      maxLength={validationRules.name.maxLength}
+                      className={`w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white ${
+                        errors.name ? "ring-2 ring-red-500" : ""
+                      }`}
+                      placeholder={t('contactUs.namePlaceholder')}
                     />
+                    {errors.name && (
+                      <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                    )}
                   </div>
 
                   <div>
                     <label className="block text-[#172436] font-medium mb-2 text-sm">
-                      {lng === "ar" ? "البريد الإلكتروني" : "Email Address"}{" "}
-                      <span className="text-red-500">*</span>
+                      {t('contactUs.emailAddress')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       disabled={loading}
-                      className="w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white"
+                      maxLength={validationRules.email.maxLength}
+                      className={`w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white ${
+                        errors.email ? "ring-2 ring-red-500" : ""
+                      }`}
                       placeholder="example@email.com"
+                      dir="ltr"
                     />
+                    {errors.email && (
+                      <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                    )}
                   </div>
 
                   <div>
                     <label className="block text-[#172436] font-medium mb-2 text-sm">
-                      {lng === "ar" ? "رقم الهاتف" : "Phone Number"}
+                      {t('contactUs.phoneNumber')}
                     </label>
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       disabled={loading}
-                      className="w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white"
+                      maxLength={validationRules.phone.maxLength}
+                      className={`w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white ${
+                        errors.phone ? "ring-2 ring-red-500" : ""
+                      }`}
                       placeholder="+971 XX XXX XXXX"
+                      dir="ltr"
                     />
+                    {errors.phone && (
+                      <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
+                    )}
                   </div>
 
                   <div>
                     <label className="block text-[#172436] font-medium mb-2 text-sm">
-                      {lng === "ar" ? "الموضوع" : "Subject"}{" "}
-                      <span className="text-red-500">*</span>
+                      {t('contactUs.subject')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       disabled={loading}
-                      className="w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white"
-                      placeholder={
-                        lng === "ar"
-                          ? "كيف يمكننا مساعدتك؟"
-                          : "How can we help you?"
-                      }
+                      maxLength={validationRules.subject.maxLength}
+                      className={`w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white ${
+                        errors.subject ? "ring-2 ring-red-500" : ""
+                      }`}
+                      placeholder={t('contactUs.subjectPlaceholder')}
                     />
+                    {errors.subject && (
+                      <p className="mt-1 text-sm text-red-600">{errors.subject}</p>
+                    )}
                   </div>
 
                   <div>
                     <label className="block text-[#172436] font-medium mb-2 text-sm">
-                      {lng === "ar" ? "الرسالة" : "Message"}{" "}
-                      <span className="text-red-500">*</span>
+                      {t('contactUs.message')} <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
+                      onBlur={handleBlur}
                       disabled={loading}
+                      maxLength={validationRules.message.maxLength}
                       rows="5"
-                      className="w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white"
-                      placeholder={
-                        lng === "ar"
-                          ? "اكتب رسالتك هنا..."
-                          : "Write your message here..."
-                      }
+                      className={`w-full px-4 py-3 border-0 rounded-2xl focus:outline-none transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed text-[#172436] bg-white ${
+                        errors.message ? "ring-2 ring-red-500" : ""
+                      }`}
+                      placeholder={t('contactUs.messagePlaceholder')}
                     />
+                    <div className="flex justify-between items-center mt-1">
+                      {errors.message ? (
+                        <p className="text-sm text-red-600">{errors.message}</p>
+                      ) : (
+                        <span></span>
+                      )}
+                      <p className="text-xs text-gray-500">
+                        {formData.message.length}/{validationRules.message.maxLength}
+                      </p>
+                    </div>
                   </div>
 
                   <button
@@ -377,15 +446,11 @@ const Screen = ({ params }) => {
                     className="w-full bg-[#f0a647] hover:bg-[#e09537] text-white font-medium py-3 px-6 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
                   >
                     {loading ? (
-                      <span>
-                        {lng === "ar" ? "جاري الإرسال..." : "Sending..."}
-                      </span>
+                      <span>{t('contactUs.sending')}</span>
                     ) : (
                       <>
                         <FiSend className="w-5 h-5" />
-                        <span>
-                          {lng === "ar" ? "إرسال الرسالة" : "Send Message"}
-                        </span>
+                        <span>{t('contactUs.sendMessageButton')}</span>
                       </>
                     )}
                   </button>
@@ -396,7 +461,7 @@ const Screen = ({ params }) => {
 
           <div className="mt-16 pt-12">
             <h2 className="font-bold text-[#172436] text-2xl sm:text-3xl text-center mb-12">
-              {lng === "ar" ? "وكلاؤنا" : "Our Agents"}
+              {t('contactUs.ourAgents')}
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 gap-y-16">
               {agents.map((agent, index) => (
@@ -445,11 +510,11 @@ const Screen = ({ params }) => {
                   <div className="w-full flex items-center justify-between pt-4 border-t border-gray-200 gap-4">
                     <div className="flex items-center gap-2 text-[#172436] text-xs">
                       <FiMail className="w-4 h-4 text-[#f0a647] flex-shrink-0" />
-                      <span className="truncate">{agent.email}</span>
+                      <span className="truncate" dir="ltr">{agent.email}</span>
                     </div>
                     <div className="flex items-center gap-2 text-[#172436] text-xs">
                       <FiPhone className="w-4 h-4 text-[#f0a647] flex-shrink-0" />
-                      <span className="whitespace-nowrap">{agent.phone}</span>
+                      <span className="whitespace-nowrap" dir="ltr">{agent.phone}</span>
                     </div>
                   </div>
                 </div>

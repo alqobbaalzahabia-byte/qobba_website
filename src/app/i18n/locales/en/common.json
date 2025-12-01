@@ -147,6 +147,52 @@
     "notVerifiedMessage": "Please verify your email to use the chatbot.",
     "enterEmailToVerify": "Enter your email to verify",
     "tryAgain": "Please try again"
+  },
+
+
+
+  "contactUs": {
+    "title": "Contact",
+    "contactWithUs": "Contact With Us",
+    "contactDescription": "We're here to help. Get in touch with us and we'll respond as soon as possible.",
+    "contactWithPhone": "Contact With Phone",
+    "contactWithWhatsApp": "Contact With WhatsApp",
+    "contactWithEmail": "Contact With Email",
+    "sendMessage": "Send us a Message",
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "subject": "Subject",
+    "message": "Message",
+    "sendMessageButton": "Send Message",
+    "sending": "Sending...",
+    "ourAgents": "Our Agents",
+    "fieldRequired": "This field is required",
+    "maxCharacters": "Maximum {{count}} characters",
+    "validEmail": "Please enter a valid email address",
+    "validPhone": "Please enter a valid phone number",
+    "successMessage": "Message sent successfully! We'll get back to you soon.",
+    "errorMessage": "Please correct the errors in the form",
+    "submissionError": "An error occurred while sending the message. Please try again.",
+    "namePlaceholder": "Enter your full name",
+    "subjectPlaceholder": "How can we help you?",
+    "messagePlaceholder": "Write your message here...",
+    "agents": {
+      "dubai": {
+        "name": "Dubai Branch",
+        "country": "United Arab Emirates",
+        "description": "We serve clients across the UAE with a dedicated team providing professional and responsive support."
+      },
+      "abudhabi": {
+        "name": "Abu Dhabi Branch",
+        "country": "United Arab Emirates",
+        "description": "Our Abu Dhabi team ensures high-quality service for clients in the capital and surrounding areas."
+      },
+      "sharjah": {
+        "name": "Sharjah Branch",
+        "country": "United Arab Emirates",
+        "description": "The Sharjah team supports operations across Northern UAE, delivering fast and reliable solutions."
+      }
+    }
   }
 }
-
