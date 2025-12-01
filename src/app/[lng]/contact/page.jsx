@@ -103,8 +103,7 @@ const Screen = ({ params }) => {
 
   const handleSubmit = async () => {
     if (!validateAllFields()) {
-      setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus(null), 3000);
+      // Don't set any top message for validation errors
       return;
     }
 
@@ -157,11 +156,6 @@ const Screen = ({ params }) => {
           type: "success",
           text: t('contactUs.successMessage')
         };
-      case "error":
-        return {
-          type: "error",
-          text: t('contactUs.errorMessage')
-        };
       case "submission_error":
         return {
           type: "error",
@@ -209,7 +203,7 @@ const Screen = ({ params }) => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            <section className="relative translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]">
+            <section className="relative -translate-y-4 animate-fade-in opacity-0 [--animation-delay:200ms]">
               <div className="mb-12">
                 <h2 className="font-semibold text-[#f0a647] text-xl sm:text-2xl leading-normal tracking-[0] mb-4">
                   {t('contactUs.contactWithUs')}
@@ -268,7 +262,7 @@ const Screen = ({ params }) => {
                     <FiMail className="w-5 h-5 text-[#f0a647]" />
                     <a
                       href="mailto:alqobaalzahabia@gmail.com"
-                      className="text-[#172436] hover:text-[#f0a647] transition-colors text-base sm:text-lg font-medium break-words"
+                      className="text-[#172436] hover:text-[#f0a647] transition-colors text-base sm:text-lg font-medium wrap-break-word"
                       dir="ltr"
                     >
                       alqobaalzahabia@gmail.com
@@ -294,7 +288,7 @@ const Screen = ({ params }) => {
               </div>
             </section>
 
-            <section className="relative translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]">
+            <section className="relative -translate-y-4 animate-fade-in opacity-0 [--animation-delay:400ms]">
               <div className="bg-[#fef9f0] rounded-xl border border-[#d3d3d3]/30 shadow-lg p-6 sm:p-8">
                 <h2 className="font-bold text-[#f0a647] text-xl sm:text-2xl mb-6">
                   {t('contactUs.sendMessage')}
@@ -467,7 +461,7 @@ const Screen = ({ params }) => {
               {agents.map((agent, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-r from-[#fffbf5] via-[#fff4e4] to-[#ffeccc] rounded-2xl shadow-lg p-6 pt-12 flex flex-col items-center text-center hover:shadow-xl transition-shadow relative"
+                  className="bg-linear-to-r from-[#fffbf5] via-[#fff4e4] to-[#ffeccc] rounded-2xl shadow-lg p-6 pt-12 flex flex-col items-center text-center hover:shadow-xl transition-shadow relative"
                 >
                   <div className="absolute -top-10 left-6 w-20 h-20 bg-white rounded-full flex items-center justify-center border-2 border-[#d3d3d3]/30 overflow-hidden">
                     <Image
@@ -509,11 +503,11 @@ const Screen = ({ params }) => {
 
                   <div className="w-full flex items-center justify-between pt-4 border-t border-gray-200 gap-4">
                     <div className="flex items-center gap-2 text-[#172436] text-xs">
-                      <FiMail className="w-4 h-4 text-[#f0a647] flex-shrink-0" />
+                      <FiMail className="w-4 h-4 text-[#f0a647] shrink-0" />
                       <span className="truncate" dir="ltr">{agent.email}</span>
                     </div>
                     <div className="flex items-center gap-2 text-[#172436] text-xs">
-                      <FiPhone className="w-4 h-4 text-[#f0a647] flex-shrink-0" />
+                      <FiPhone className="w-4 h-4 text-[#f0a647] shrink-0" />
                       <span className="whitespace-nowrap" dir="ltr">{agent.phone}</span>
                     </div>
                   </div>
