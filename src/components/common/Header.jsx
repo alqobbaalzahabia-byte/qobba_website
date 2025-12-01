@@ -102,6 +102,8 @@ const Header = ({ lng }) => {
                       src={ArabicFlag}
                       width={20}
                       height={20}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
+
                     />
                   ) : null}
                 </div>
@@ -164,11 +166,12 @@ const Header = ({ lng }) => {
             {/*  Logo */}
             <div className="flex items-center gap-4 relative -top-[6px]">
               <Image
-                className=" w-[111px] lg:w-[121px] h-[111px] "
+                className=" w-auto h-auto sm:w-[111px] sm:h-[111px] lg:w-[121px] lg:h-[121px] "
                 alt="Al qoba"
                 src={mainLogo}
                 width={111}
                 height={111}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
               />
             </div>
           </div>
@@ -182,6 +185,7 @@ const Header = ({ lng }) => {
                 src={mainLogo}
                 width={0}
                 height={73}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
 
@@ -223,6 +227,8 @@ const Header = ({ lng }) => {
                 src={mainLogo}
                 width={80}
                 height={73}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
+
               />
             </div>
             <button

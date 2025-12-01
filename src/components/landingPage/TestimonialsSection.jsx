@@ -27,7 +27,6 @@ const TestimonialsSection = ({ t, lng }) => {
       if (error) {
         console.error('Error fetching testimonials:', error);
       } else {
-        console.log('Testimonials data:', data);
         setTestimonials(data || []);
       }
       setLoading(false);
@@ -116,10 +115,9 @@ const TestimonialsSection = ({ t, lng }) => {
                               <Image
                                 src={testimonial.image}
                                 alt={testimonial.name?.[lng] || 'Testimonial'}
-                                className="w-20 h-20 rounded-full object-cover"
+                                className="w-20 h-20 rounded-full object-contain"
                                 width={80}
                                 height={80}
-                                quality={90}
                               />
                               <h3 className="font-bold text-[#585858] text-xl mb-4 text-center">
                                 {testimonial.name?.[lng] || 'Customer'}

@@ -109,9 +109,10 @@ const AboutSection = ({ t, lng }) => {
                 <Image  
                   src={globeImage}
                   alt="Vibrant digital globe represents innovation technology"
-                  className="w-[160px] scale-[2] md:scale-[2] lg:scale-[1.8] xl:scale-[1.8] h-auto object-contain origin-center"
+                  className=" h-auto w-[160px] scale-[2] md:scale-[2] lg:scale-[1.8] xl:scale-[1.8] object-contain origin-center"
                   width={160}
                   height={160}
+                  style={{ width: '160px', height: '160px' }}  
                 />
               </div>
             </div>

@@ -118,11 +118,13 @@
     "sections": [
       {
         "title": "Pages",
-        "links": ["Home", "Services", "Projects", "Blog"]
+        "links": ["Home", "Services", "Projects", "Blog"],
+        "href": ["#home", "#services-section", "#projects-section", "/blog"]
       },
       {
         "title": "Useful Links",
-        "links": ["FAQ", "Privacy Policy", "Terms & Conditions", "Contact Us"]
+        "links": ["FAQ", "Privacy Policy", "Terms & Conditions", "Contact Us"],
+        "href": ["#faq-section", "#privacy-policy-section", "#terms-conditions-section", "/contact"]
       }
     ],
     "copyright": "© 2025. All rights reserved."
@@ -148,8 +150,6 @@
     "enterEmailToVerify": "Enter your email to verify",
     "tryAgain": "Please try again"
   },
-
-
   "clients": {
     "title": "Our Clients",
     "back": "Back",

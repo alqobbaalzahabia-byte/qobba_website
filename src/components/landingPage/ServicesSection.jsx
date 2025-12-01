@@ -16,7 +16,6 @@ const ServicesSection = ({ t, lng }) => {
       if (error) {
         console.error('Error fetching services:', error);
       } else {
-        console.log('Services data:', data);
         setServices(data || []);
       }
       setLoading(false);
@@ -44,7 +43,6 @@ const ServicesSection = ({ t, lng }) => {
                     alt={service.title?.[lng] || 'Service'} 
                     width={198}
                     height={198}
-                    quality={90}
                     className="w-full h-48 object-cover p-0" 
                   />
                 )}

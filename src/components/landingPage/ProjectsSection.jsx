@@ -15,7 +15,6 @@ const ProjectsSection = ({ t, lng }) => {
       if (error) {
         console.log('Error fetching projects:', error);
       } else {
-        console.log('Projects data:', data);
         setProjects(data || []);
       }
       setLoading(false);
@@ -101,7 +100,6 @@ const ProjectsSection = ({ t, lng }) => {
                             src={project.image}
                             width={522}
                             height={263}
-                            quality={90}
                           />
 
                           <div className="p-6 absolute bottom-0 left-0 w-full">
@@ -136,7 +134,6 @@ const ProjectsSection = ({ t, lng }) => {
                             src={projects[2].image}
                             width={522}
                             height={550}
-                            quality={90}
                           />
                           <div className="p-6 absolute bottom-0 left-0 w-full">
                             <div className="flex items-center gap-3">
@@ -170,7 +167,6 @@ const ProjectsSection = ({ t, lng }) => {
                           src={project.image}
                           width={247}
                           height={250}
-                          quality={90}
                         />
                         <div className=" p-6 smp-2 md:p-6 absolute bottom-0 left-0 w-full">
                           <div className="flex items-center md:gap-3 gap-2">

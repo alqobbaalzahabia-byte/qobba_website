@@ -3,6 +3,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import Image from "next/image";
+import Link from "next/link";
 import mainLogo from '@/../public/assets/main-logo.svg';
 
 const socialLinks = [
@@ -21,12 +22,12 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
           <div className="space-y-4">
             <div className="logo-footer mb-0">
               <Image
-                className="w-[111px] h-[111px]"
+                className="w-[111px] h-[111px] object-contain"
                 alt="Al qoba"
                 src={mainLogo}
                 width={111}
                 height={111}
-                quality={90}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
               />
             </div>
             <p className="text-sm md:text-[18px] text-[#585858] bg-opacity-60 rounded-lg py-3 leading-7">
@@ -63,11 +64,11 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
                 <div key={section.title} className="  sm:min-w-[250px] lg:min-w-[150px] space-y-4">
                   <p className="text-[20px] font-semibold">{section.title}</p>
                   <ul className="space-y-2 text-[18px] text-[#585858]/80">
-                    {links.map((link) => (
-                      <li key={link}>
-                        <a href="#" className="transition hover:text-[#585858]">
+                    {links.map((link, index) => (
+                      <li key={index}>
+                        <Link href={section.href[index]} scroll={true} className="transition hover:text-[#585858]">
                           {link}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>

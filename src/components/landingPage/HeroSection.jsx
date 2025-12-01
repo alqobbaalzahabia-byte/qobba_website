@@ -35,8 +35,22 @@ const HeroSection = ({ t, lng }) => {
     <div className="hero-section relative  w-full  h-[800px]  overflow-hidden ">
       <section className="relative w-full h-full">
         <div className="overlay-clip-path w-full flex absolute top-0 left-0">
-          <Image src={OverlayRight} alt="Overlay right" className="w-1/2 h-[727px] object-cover scale-x-[-1] opacity-[0.1]" />
-          <Image src={OverlayRight} alt="Overlay right" className="w-1/2 h-[727px] object-cover opacity-[0.1]" />
+          <Image src={OverlayRight} 
+          alt="Overlay right" 
+          loading="eager"
+          className= "w-1/2 h-[727px] object-cover scale-x-[-1] opacity-[0.1]"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
+          width={0}
+          height={0}
+          />
+          <Image src={OverlayRight} 
+          alt="Overlay right" 
+          loading="eager"
+          className="w-1/2 h-[727px] object-cover opacity-[0.1]"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
+          width={0}
+          height={0}
+          />
         </div>
         <div className="hero-content gap-5 sm:gap-20 md:gap-30 px-2 md:px-0 z-20 container mx-auto h-full flex flex-col items-center  relative pt-10 ">
           <div className="box-1 sticky z-9">
@@ -66,7 +80,7 @@ const HeroSection = ({ t, lng }) => {
               />
             </div>
 
-            <h1 className="hero-title md:w-[680px] h-[59px] pb-2  flex items-end justify-center  font-normal text-transparent text-[32px] text-center tracking-[0] leading-[normal]  translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:600ms]">
+            <h1 className="hero-title md:w-[680px] md:h-[59px] pb-2  flex items-end justify-center  font-normal text-transparent text-[32px] text-center tracking-[0] leading-[normal]  translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:600ms]">
               <span className="font-bold text-[#572b0a]">
                 {(() => {
                   const title = t('hero.title');
@@ -98,6 +112,7 @@ const HeroSection = ({ t, lng }) => {
                     className="absolute top-[-60%] sm:top-[-80%] lg:top-[-80%] left-1/2 -translate-x-1/2 sm:w-[80%] md:w-[100%] lg:w-[100%] h-[100%] object-contain md:object-cover"
                     alt="Overlay earth"
                     src={overlayEarth}
+                    loading="eager"
                   
                   />
                 </div>
@@ -132,7 +147,7 @@ const HeroSection = ({ t, lng }) => {
                       </p>
                       <div className="feature-image flex-1 relative h-full lg:min-w-[220px]">
                         <Image  src={phoneIcon}
-                          className={`absolute z-5 -top-[67px]  sm:w-[240px] md:w-[178px] h-[218px] object-cover ${lng === 'ar' ? 'scale-x-100 sm:left-[-40%] md lg:-left-[15%]' : 'scale-x-[-1] md:left-[45%] lg:left-[55%]'}`}
+                          className={`absolute z-5 -top-[67px] w-auto h-auto  sm:w-[240px] md:w-[178px] h-[218px] object-cover ${lng === 'ar' ? 'scale-x-100 sm:left-[-40%] md lg:-left-[15%]' : 'scale-x-[-1] md:left-[45%] lg:left-[55%]'}`}
                           alt="Phone icon"
                           width={240}
                           height={218}

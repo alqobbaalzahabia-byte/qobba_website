@@ -23,7 +23,6 @@ const PlansSection = ({ t, lng }) => {
       if (error) {
         console.error('Error fetching plans:', error);
       } else {
-        console.log('Plans data:', data);
         setPlans(data || []);
       }
       setLoading(false);

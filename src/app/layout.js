@@ -53,7 +53,7 @@ export default async function RootLayout({ children }) {
   const headersList = await headers();
   const lng = headersList.get('x-language') || fallbackLng;
   return (
-    <html lang={lng} dir={lng === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={lng} dir={lng === 'ar' ? 'rtl' : 'ltr'} data-scroll-behavior="smooth">
       <body className={`${cairoFont.variable} ${exoFont.variable}  antialiased`}>
         <Suspense fallback={
           <div className=" absolute z-[500] top-0 left-0 w-full h-full flex items-center justify-center min-h-screen bg-[#fdfef9]">
