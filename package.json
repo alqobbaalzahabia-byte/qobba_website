@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@animaapp/vite-plugin-screen-graph": "^0.1.11",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.84.0",
     "accept-language": "^3.0.20",
     "i18next": "^25.6.3",
