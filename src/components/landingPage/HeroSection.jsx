@@ -104,8 +104,8 @@ const HeroSection = ({ t, lng }) => {
             </p>
           </div>
           <div className="box-2 w-full">
-            <div className="download-app h-[199px] px-5 sm:px-0 lg:px-3 [-55px] left-0 w-full opacity-0 translate-y-[-1rem] animate-fade-in [--animation-delay:400ms]">
-              <div className="relative container lg:max-w-[1150px] mx-auto">
+            <div className="download-app px-2 lg:px-0 h-[199px] px-5 sm:px-3 lg:px-3 [-55px] left-0 w-full opacity-0 translate-y-[-1rem] animate-fade-in [--animation-delay:400ms]">
+              <div className="relative container  lg:max-w-[1150px] mx-auto">
                 {/* Overlay earth */}
                 <div className="overlay-earth">
                   <Image
@@ -117,7 +117,7 @@ const HeroSection = ({ t, lng }) => {
                   />
                 </div>
                 {/* Background gradient overlay  */}
-                <div className="absolute left-0 w-full h-[175px] sm:h-[199px]  rounded-[28px] bg-[radial-gradient(circle_at_center,#FFF8EC_0%,#FAC675_100%)]"></div>
+                <div className="absolute left-0 w-full h-[175px] sm:h-[199px] md:h-[170px] lg:h-[199px] rounded-[28px] bg-[radial-gradient(circle_at_center,#FFF8EC_0%,#FAC675_100%)]"></div>
                 {/* Clip path arrow */}
                 <div className="clip-path-arrow h-full">
                   <Image
@@ -138,7 +138,7 @@ const HeroSection = ({ t, lng }) => {
                 </div>
 
                 {/* Download app content */}
-                <div className="relative sm:h-[199px] flex items-center justify-around flex-row-reverse gap-2 px-4 sm:pt-[25px] ">
+                <div className="relative sm:h-[199px] md:h-[170px] lg:h-[199px] flex items-center justify-around flex-row-reverse gap-2 px-4 sm:pt-[25px] ">
                   {/* Left Box */}
                   <div className=" hidden md:flex items-center justify-center  relative top-3 flex-1 max-w-[490px] sm:h-[150px]  h-[175px] rounded-[28px] ">
                     <div className="w-full h-full flex items-center justify-center ">
@@ -147,13 +147,13 @@ const HeroSection = ({ t, lng }) => {
                       </p>
                       <div className="feature-image flex-1 relative h-full lg:min-w-[220px]">
                         <Image  src={phoneIcon}
-                          className={`absolute z-5 -top-[67px] w-auto h-auto  sm:w-[240px] md:w-[178px] h-[218px] object-cover ${lng === 'ar' ? 'scale-x-100 sm:left-[-40%] md lg:-left-[15%]' : 'scale-x-[-1] md:left-[45%] lg:left-[55%]'}`}
+                          className={`absolute z-5 -top-[67px] w-auto h-auto  sm:w-[240px] md:w-[178px] h-[218px] object-cover ${lng === 'ar' ? 'scale-x-100 sm:left-[-40%] md:-top-9 lg:-top-15 lg:-left-[15%]' : 'scale-x-[-1]  md:left-[40%] md:top-[-25%] lg:top-[-40%] lg:left-[50%]'}`}
                           alt="Phone icon"
                           width={240}
                           height={218}
                         />
                         <Image  src={femaleRobotHead}
-                          className={`absolute z-0 bottom-0 right-[9px] w-[164px] h-[164px] object-cover scale-x-[-1] ${lng === 'ar' ? 'scale-x-[1]' : 'scale-x-[-1]'}`}
+                          className={`absolute z-0 bottom-0 right-[9px] w-[164px] h-[164px] object-cover scale-x-[-1] ${lng === 'ar' ? 'scale-x-[1] md:top-[-30px] lg:top-[-14px] md:right-[-20px] lg:right-[20px] ' : ' md:right-[-0px] lg:right-[20px] md:top-[-30px] lg:top-[-14px] scale-x-[-1]'}`}
                           alt="Female robot head"
                           width={164}
                           height={164}
@@ -178,7 +178,7 @@ const HeroSection = ({ t, lng }) => {
                   </div>
 
                   {/* Right Box */}
-                  <div className="relative flex-1 max-w-[490px] sm:h-[150px] h-[175px] rounded-[28px] flex flex-col items-center justify-center gap-4">
+                  <div className="relative flex-1 max-w-[490px] sm:h-[150px] h-[175px] rounded-[28px] flex flex-col items-center justify-center gap-0 lg:gap-4">
                     <h2 className="font-exo font-bold text-[#172436] text-[24px] sm:text-[30px] md:text-[24px] lg:text-[34px] leading-[normal] tracking-[0]  text-center">
                       {t('app.download')}
                     </h2>

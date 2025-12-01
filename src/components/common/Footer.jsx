@@ -16,7 +16,7 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
   const sections = t('footer.sections', { returnObjects: true });  
   const footerSections = Array.isArray(sections) ? sections : [];
   return (
-    <footer className="bg-[linear-gradient(180deg,rgba(243,243,243,1)_0%,rgba(255,249,236,1)_100%)]  ">
+    <footer className="bg-[linear-gradient(180deg,rgba(243,243,243,1)_0%,rgba(255,249,236,1)_100%)]  overflow-hidden">
       <div className="container mx-auto lg:max-w-[1100px] px-4 sm:px-2 py-4 gap-10 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 ">
         <div className=" lg:col-span-2 items-center">
           <div className="space-y-4">

@@ -101,18 +101,18 @@ const AboutSection = ({ t, lng }) => {
           <Image src={OverlayRight} alt="Overlay right" className="w-full h-[800px] r" />
         </div>
      <div className="container lg:max-w-[1000px] mx-auto">
-        <div className="relative rounded-3xl  p-6 md:p-8">
+        <div className="relative rounded-3xl  md:px-2 md:py-5">
           <div className={`relative grid grid-cols-1 sm:grid-cols-5 gap-8 items-center min-h-[500px] ${lng === 'ar' ? 'lg:grid-flow-col-dense ' : ''}`}>
             {/* Left box - Globe Image */}
             <div className={`hidden md:flex items-center ${lng === 'ar' ? 'lg:justify-end sm:order-2 sm:col-span-2' : 'lg:justify-start  md:col-span-2'} p-4 translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:200ms]`}>
-              <div className={`relative top-[-100px]  lg:top-[-30px] -left-90  sm:-left-40  xl:top-0 w-full h-auto overflow-visible ${lng === 'ar' ? 'md:top-[-50px]  md:-left-60  lg:-left-90' : 'md:top-18 md:left-17  lg:left-40 rotate-180'}`}>
+              <div className={`relative top-[-100px]  lg:top-[-30px] -left-90  sm:-left-40  xl:top-0 w-full h-auto overflow-visible ${lng === 'ar' ? 'md:top-[-50px]  md:-left-60  lg:-left-90' : 'md:top-18 md:left-22  lg:left-40 rotate-180'}`}>
                 <Image  
                   src={globeImage}
                   alt="Vibrant digital globe represents innovation technology"
-                  className=" h-auto w-[160px] scale-[2] md:scale-[2] lg:scale-[1.8] xl:scale-[1.8] object-contain origin-center"
+                  className="h-auto scale-[2] md:scale-[1.5] lg:scale-[1.8] xl:scale-[1.5] object-contain origin-center"
                   width={160}
                   height={160}
-                  style={{ width: '160px', height: '160px' }}  
+                  style={{ width: 'auto' }}
                 />
               </div>
             </div>
