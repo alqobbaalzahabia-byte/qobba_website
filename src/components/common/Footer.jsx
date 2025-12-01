@@ -57,61 +57,45 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
 
         <div className="flex justify-end gap-10  lg:pt-[100px] ">
           <div className="links flex gap-9 w-full ">
-
-          {footerSections.map((section) => {
-            const links = section.links ??[];
-            return (
-            <div key={section.title} className="  sm:min-w-[250px] lg:min-w-[150px] space-y-4">
-              <p className="text-lg font-semibold">{section.title}</p>
-              <ul className="space-y-2 text-sm text-[#585858]/80">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="transition hover:text-[#585858]">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )})}
-
-          <div className="ml-auto flex flex-col gap-4 text-sm text-[#585858]/80 hidden">
-            <p>{t('footer.copyright')}</p>
-            <div className="flex items-center gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href="#"
-                  className="rounded-full border border-white/30 p-2 transition hover:border-white hover:bg-white/10"
-                >
-                  <span className="sr-only">{social.label}</span>
-                 {social.icon}
-                </a>
-              ))}
-            </div>
-          </div>
+            {footerSections.map((section) => {
+              const links = section.links ?? [];
+              return (
+                <div key={section.title} className="  sm:min-w-[250px] lg:min-w-[150px] space-y-4">
+                  <p className="text-[20px] font-semibold">{section.title}</p>
+                  <ul className="space-y-2 text-[18px] text-[#585858]/80">
+                    {links.map((link) => (
+                      <li key={link}>
+                        <a href="#" className="transition hover:text-[#585858]">
+                          {link}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            })}
           </div>
 
         </div>
       </div>
-      <div className="border-b border-white/10">  
+      <div className="border-b border-white/10">
       </div>
       <div className="container mx-auto lg:max-w-[1100px] px-4 sm:px-2 py-4">
-      <div className="ml-auto flex justify-between items-center gap-4 text-sm  ">
-            <p className={`${lng === 'ar' ? '-order-8' : ''}`}>{t('footer.copyright')}</p>
-            <div className="flex items-center gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href="#"
-                  className="rounded-full border bg-[#F0A647] text-white border-white/30 p-2 transition hover:border-white hover:text-[#F0A647] hover:bg-gray-200"
-                >
-                  <span className="sr-only">{social.label}</span>
-                  {social.icon}
-                </a>
-              ))}
-            </div>
+        <div className="ml-auto flex justify-between items-center gap-4 text-sm  ">
+          <p className={`${lng === 'ar' ? '-order-8' : ''}`}>{t('footer.copyright')}</p>
+          <div className="flex items-center gap-4">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href="#"
+                className="rounded-full border bg-[#F0A647] text-white border-white/30 p-2 transition hover:border-white hover:text-[#F0A647] hover:bg-gray-200"
+              >
+                <span className="sr-only">{social.label}</span>
+                {social.icon}
+              </a>
+            ))}
           </div>
+        </div>
       </div>
 
     </footer>
@@ -119,4 +103,3 @@ const Footer = ({ t = (key) => key, lng = 'ar' }) => {
 };
 
 export default Footer;
-  

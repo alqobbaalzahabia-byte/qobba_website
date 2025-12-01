@@ -25,7 +25,7 @@ const ProjectsSection = ({ t, lng }) => {
   }, []);
 
   return (
-    <section className="projects-section relative w-full py-16 px-0">
+    <section className="projects-section relative w-full py-16 px-0" id="projects-section">
       <div className="container lg:max-w-[1150px]  mx-auto p-6 bg-[linear-gradient(0deg,rgba(252,252,252,0)_0%,rgba(251,207,104,0.05)_51%,rgba(250,176,0,0.08)_100%)] rounded-[20px]">
         {/* Title */}
         <h2 className="relative text-center font-bold text-[#5e2900] text-[32px] mb-12">

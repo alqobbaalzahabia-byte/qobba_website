@@ -26,7 +26,7 @@ const ServicesSection = ({ t, lng }) => {
   }, []);
 
   return (
-    <section className="services-section relative w-full ">
+    <section className="services-sectiond relative w-full " id="services-section">
       <div className="container lg:max-w-[1190px] mx-auto px-6 md:px-4 mt-16">
         <h2 className="text-center font-bold text-[#572b0a] text-[32px] mb-8">
           {t('services.title')}

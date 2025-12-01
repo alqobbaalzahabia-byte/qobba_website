@@ -57,9 +57,9 @@ const Header = ({ lng }) => {
 
   const navItems = [
     { label: t('nav.home'), href: `/${lng}`, active: isActive('/') },
-    { label: t('nav.services'), href: `/${lng}/services`, active: isActive('/services') },
-    { label: t('nav.projects'), href: `/${lng}/projects`, active: isActive('/projects') },
-    { label: t('nav.about'), href: `/${lng}/about`, active: isActive('/about') },
+    { label: t('nav.services'), href: `/${lng}/#services-section`, active: isActive('/services') },
+    { label: t('nav.projects'), href: `/${lng}/#projects-section`, active: isActive('/projects') },
+    { label: t('nav.about'), href: `/${lng}/#about-section`, active: isActive('/about') },
     { label: t('nav.blog'), href: `/${lng}/blog`, active: isActive('/blog') },
   ];
 
@@ -77,8 +77,8 @@ const Header = ({ lng }) => {
           {/* Desktop: Left section: Button-Contact /  Switich-Language */}
           <div className="hidden md:flex items-center gap-4 flex-row-reverse ">
             <Link href={`/${lng}/contact`}>
-              <Button className="cursor-pointer w-[179px] h-12 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity">
-                <div className=" font-bold text-white text-xl text-center tracking-[0] leading-[normal] whitespace-nowrap ">
+              <Button className="cursor-pointer md:w-[160px] lg:w-[179px] h-12 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity">
+                <div className=" font-bold text-white md:tex-[16px] lg:text-xl text-center tracking-[0] leading-[normal] whitespace-nowrap ">
                   {t('header.contact')}
                 </div>
               </Button>
@@ -89,7 +89,7 @@ const Header = ({ lng }) => {
                 onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
                 className=" h-[45px]  bg-white rounded-xl flex items-center justify-between gap-1  hover:opacity-90 transition-opacity cursor-pointer"
               >
-                <div className="inline-flex items-center justify-center gap-2 px-4 lg:px-3">
+                <div className="inline-flex items-center justify-center gap-2 lg:px-4 lg:px-3">
                 <IoIosArrowDown className={`text-lg text-gray-400 transition-transform duration-200 ${isLanguageDropdownOpen ? 'rotate-180' : ''}`} />
 
                   <div className="font-medium text-[#7f7f7f] text-lg tracking-[0] leading-[normal] whitespace-nowrap ">

@@ -47,7 +47,7 @@ export default async function BlogPage({ params }) {
       data-model-id="58:1871"
     >
       <main className="pt-[50px]">
-        <div className="container mx-auto lg:max-w-[1150px]">
+        <div className="container mx-auto px-5 lg:max-w-[1150px]">
         <section className="relative animate-fade-in opacity-0 [--animation-delay:200ms]">
           {featuredBlog && (
             <>
@@ -89,9 +89,9 @@ export default async function BlogPage({ params }) {
                 <Image
                   width={1152}
                   height={508}
-                  className="w-[1152px] h-[508px] rounded-lg object-cover"
+                  className="w-full md:h-[508px] rounded-lg object-cover"
                   alt={getLocalizedText(featuredBlog.title)}
-                  src={featuredBlog.image || "https://c.animaapp.com/mihru5swI146K5/img/rectangle-18673.png"}
+                  src={featuredBlog.image}
                 />
               </div>          
 
@@ -99,7 +99,7 @@ export default async function BlogPage({ params }) {
                 {paginationDots.map((dot, index) => (
                   <div
                     key={index}
-                    className={`${dot.active ? "w-8 bg-[#fecf85]" : "w-4 bg-[#d9d9d999]"} h-4 rounded-lg transition-all cursor-pointer hover:opacity-80`}
+                    className={`${dot.active ? "w-8 bg-[#fecf85]" : "w-4 bg-[#d9d9d999]"} h-3 rounded-lg transition-all cursor-pointer hover:opacity-80`}
                   />
                 ))}
               </div>
@@ -107,13 +107,13 @@ export default async function BlogPage({ params }) {
           )}
         </section>
 
-        <section className="relative mt-[80px] translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms] px-4 sm:px-6 lg:px-8">
+        <section className="relative mt-[80px] translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:400ms]  sm:px-6 lg:px-8">
           <h2 className=" mb-8  font-bold text-[#172436] text-2xl sm:text-3xl lg:text-[40px] leading-[normal] tracking-[0] ">
             {lng === 'ar' ? 'المقالات الشائعة' : 'Popular Articles'}
           </h2>
 
           {blogs.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6 max-w-7xl mx-auto">
               {blogs.map((blog, index) => (
                 <Card
                   key={blog.id || index}

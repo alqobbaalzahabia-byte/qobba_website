@@ -96,7 +96,7 @@ const AboutSection = ({ t, lng }) => {
   }
   
   return (
-    <section className="about-section relative w-full py-16 px-4 overflow-hidden ">
+    <section className="about-section relative w-full py-16 px-4 overflow-hidden " id="about-section">
         <div className="about-overlay absolute top-0 left-0 w-full h-full">
           <Image src={OverlayRight} alt="Overlay right" className="w-full h-[800px] r" />
         </div>
