@@ -62,7 +62,8 @@
   "projects": {
     "title": "Projects",
     "projectName": "Project Name",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "showMore": "Show More"
   },
   "pricing": {
     "title": "Pricing Plans for Everyone",
