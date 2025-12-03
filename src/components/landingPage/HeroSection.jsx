@@ -81,7 +81,7 @@ const HeroSection = ({ t, lng }) => {
             </div>
 
             <h1 className="hero-title md:w-[680px] md:h-[59px] pb-2  flex items-end justify-center  font-normal text-transparent text-[32px] text-center tracking-[0] leading-[normal]  translate-y-[-1rem] animate-fade-in opacity-0 [--animation-delay:600ms]">
-              <span className="font-bold text-[#572b0a]">
+              <span className={`font-bold text-[#572b0a] ${lng === 'ar' ? '' : 'text-[25px] sm:text-[32px] '} `}>
                 {(() => {
                   const title = t('hero.title');
                   const parts = title.split(' ');
