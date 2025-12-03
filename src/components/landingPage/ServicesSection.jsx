@@ -1,12 +1,16 @@
 'use client'
-
 import React, { useState, useEffect } from "react";
 import { supabase } from '@/lib/supabase'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import SkeletonCard  from '@/components/ui/SkeletonCard'
 import Image from "next/image";
-const ServicesSection = ({ t, lng }) => {
+import { useParams } from 'next/navigation'
+import { useTranslation } from '@/app/i18n/client'
+  const ServicesSection = () => {
+  const params = useParams()
+  const lng = params?.lng || 'en'
+  const { t } = useTranslation(lng)
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,11 +28,24 @@ const ServicesSection = ({ t, lng }) => {
     fetchServices();
   }, []);
 
+  // this for render title decoration with color
+  const renderTitle = (title) => {
+    if (!title) return null;
+    const words = title.trim().split(/\s+/);
+    const n = lng === 'ar' ? 1 : 2;
+    return (
+      <>
+        <span className="text-[#E19F00]">{words.slice(0, n).join(' ')} </span>
+        <span className="text-[#572b0a]">{words.slice(n).join(' ')}</span>
+      </>
+    );
+  };
+
   return (
     <section className="services-sectiond relative w-full " id="services-section">
       <div className="container lg:max-w-[1190px] mx-auto px-6 md:px-4 mt-16">
-        <h2 className="text-center font-bold text-[#572b0a] text-[32px] mb-8">
-          {t('services.title')}
+        <h2 className="text-center font-bold text-[32px] mb-8">
+          {renderTitle(t('services.title'))}
         </h2>
         {loading ? (
           <SkeletonCard  length={4} className="md:!min-w-[200px]"/>

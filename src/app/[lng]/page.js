@@ -27,13 +27,13 @@ const App = ({ params }) => {
       <HeroSection t={t} lng={lng} />
 
       {/* Services Section */}
-      <ServicesSection t={t} lng={lng} />
+      <ServicesSection/>
 
       {/* Projects Section */}
       <ProjectsSection t={t} lng={lng} />
 
       {/* About Section */}
-      <AboutSection t={t} lng={lng} />
+      <AboutSection />
 
       {/* Plans Section */}
       <PlansSection t={t} lng={lng} />
