@@ -5,7 +5,13 @@ import { supabase } from '@/lib/supabase'
 import Button from '@/components/ui/Button'
 import OverlayRight from '@/../public/assets/about-overlay.png'
 import Image from 'next/image'
-const AboutSection = ({ t, lng }) => {
+import { useTranslation } from '@/app/i18n/client'
+import { useParams } from 'next/navigation'
+
+const AboutSection = () => {
+  const params = useParams()
+  const lng = params?.lng || 'en'
+  const { t } = useTranslation(lng)
   const [aboutData, setAboutData] = useState(null);
   const [loading, setLoading] = useState(true);
 

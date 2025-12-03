@@ -59,7 +59,7 @@ const Header = ({ lng }) => {
     { label: t('nav.home'), href: `/${lng}`, active: isActive('/') },
     { label: t('nav.services'), href: `/${lng}/services`, active: isActive('/services') },
     { label: t('nav.projects'), href: `/${lng}/projects`, active: isActive('/projects') },
-    { label: t('nav.about'), href: `/${lng}/#about-section`, active: isActive('/about') },
+    { label: t('nav.about'), href: `/${lng}/about-us`, active: isActive('/about') },
     { label: t('nav.blog'), href: `/${lng}/blog`, active: isActive('/blog') },
   ];
 
