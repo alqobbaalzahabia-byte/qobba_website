@@ -62,7 +62,8 @@
   "projects": {
     "title": "المشاريع",
     "projectName": "اسم المشروع",
-    "viewAll": "عرض الكل"
+    "viewAll": "عرض الكل",
+    "showMore": "عرض المزيد"
   },
   "pricing": {
     "title": "خطط تسعير تناسب الجميع",
