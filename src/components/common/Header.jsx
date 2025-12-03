@@ -57,8 +57,8 @@ const Header = ({ lng }) => {
 
   const navItems = [
     { label: t('nav.home'), href: `/${lng}`, active: isActive('/') },
-    { label: t('nav.services'), href: `/${lng}/#services-section`, active: isActive('/services') },
-    { label: t('nav.projects'), href: `/${lng}/#projects-section`, active: isActive('/projects') },
+    { label: t('nav.services'), href: `/${lng}/services`, active: isActive('/services') },
+    { label: t('nav.projects'), href: `/${lng}/projects`, active: isActive('/projects') },
     { label: t('nav.about'), href: `/${lng}/#about-section`, active: isActive('/about') },
     { label: t('nav.blog'), href: `/${lng}/blog`, active: isActive('/blog') },
   ];

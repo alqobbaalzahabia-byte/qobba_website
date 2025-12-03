@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from '@/lib/supabase'
 import Button from '@/components/ui/Button'
 import { HiArrowNarrowUp } from "react-icons/hi";
+import Link from "next/link";
 import Image from "next/image";
 const ProjectsSection = ({ t, lng }) => {
   const [projects, setProjects] = useState([]);
@@ -190,7 +191,9 @@ const ProjectsSection = ({ t, lng }) => {
             <div className="relative flex justify-center">
               <Button className="cursor-pointer w-[342px] h-16 rounded-[18px] bg-gradient-button hover:opacity-90 transition-opacity">
                 <div className="font-bold text-white text-2xl text-center tracking-[0] leading-[normal] whitespace-nowrap">
-                  {t('projects.viewAll')}
+                  <Link href={`${lng}/projects`}>
+                     {t('projects.viewAll')}
+                  </Link>
                 </div>
               </Button>
             </div>
