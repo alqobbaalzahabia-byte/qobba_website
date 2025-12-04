@@ -47,6 +47,33 @@ export async function generateStaticParams() {
 export const metadata = {
   title: "Alqoba Alzahabia",
   description: "Alqoba Alzahabia",
+  openGraph: {
+    title: "Alqoba Alzahabia",
+    url: 'https://www.alqoba-alzahabia.cloud/ar', 
+    siteName: 'Alqoba Alzahabia',
+    images: [
+      {
+        url: '/favicon.ico', 
+        width: 1200,
+        height: 630,
+        alt: 'Alqoba Alzahabia',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+    phoneNumbers: ['+971508614314'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Alqoba Alzahabia",
+    description: "Alqoba Alzahabia.",
+    images: ['/favicon.ico'], 
+    creator: '@alqoba-alzahabia', 
+  },
+  icons: {
+    icon: "/favicon.ico"
+  },
+ 
 };
 
 export default async function RootLayout({ children }) {
