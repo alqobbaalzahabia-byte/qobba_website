@@ -1,8 +1,10 @@
 import { createClient } from '@/lib/supabase-server'
 import ServicesList from '@/app/[lng]/dashboard/services/components/ServicesList'
+import { useTranslation } from '@/app/i18n/index'
 
 export default async function ServicesPage({ params }) {
   const { lng } = await params
+  const { t } = await useTranslation(lng)
   const supabase = await createClient()
 
   const { data: services, error } = await supabase
@@ -12,14 +14,15 @@ export default async function ServicesPage({ params }) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Services</h1>
-        <p className="text-gray-600">Manage and view all your services</p>
+      <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('services.title')}</h1>
+        <button className="cursor-pointer px-4 py-2 bg-gradient-button text-white rounded-lg hover:bg-orange-700 transition-colors">
+          {t('services.createService')}
+        </button>
       </div>
 
       {/* Services List */}
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">All Services</h2>
         <ServicesList services={services} error={error} lng={lng} />
       </div>
     </div>

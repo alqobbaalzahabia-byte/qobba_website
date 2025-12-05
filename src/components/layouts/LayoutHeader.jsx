@@ -20,7 +20,7 @@ export default function ConditionalLayout({ children, lng }) {
       <div className='content flex-1'>
         {children}
       </div>
-      <ChatBot lng={lng} />
+      {/* <ChatBot lng={lng} /> */}
       <Footer lng={lng} />
     </div>
   )

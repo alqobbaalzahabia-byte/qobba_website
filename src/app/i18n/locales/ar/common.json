@@ -3,8 +3,7 @@
     "home": "الرئيسية",
     "services": "خدامتنا",
     "projects": "المشاريع",
-    "about": "من نحن",
-    "blog": "المدونة"
+    "about": "من نحن"
   },
   "header": {
     "contact": "تواصل معنا",
@@ -31,6 +30,7 @@
   },
   "services": {
     "title": "خدماتنا التي نركز عليها",
+    "createService": "إنشاء خدمة",
     "searchEngines": {
       "title": "محركات البحث",
       "description": "هذا النص يمكن أن يتم تركيبه على أي تصميم دون مشكلة فلن يبدو وكأنه نص منسوخ"
@@ -112,20 +112,20 @@
     }
   },
   "footer": {
-    "description": "هذا النص يمكن أن يتم تركيبه على أي تصميم دون مشكلة فهو نص منسوخ، غير منظم، غير منسق، أو حتى غير مفهوم، لأنه مازال نصًا بديلاً ومؤقتًا.",
+    "description": "نحن لا نقدم خدمة واحدة… بل نبني لك منظومة رقمية متكاملة تساعدك على النمو، جذب عملائك، توصيل رسالتك بوضوح، وتحقيق نتائج ملموسة تدعم نجاحك.",
     "newsletterTitle": "اشترك في نشرتنا البريدية ليصلك كل جديد في أخبار السوق",
     "newsletterPlaceholder": "البريد الإلكتروني",
     "newsletterButton": "اشترك الآن",
     "sections": [
       {
         "title": "الصفحات",
-        "links": ["الرئيسية", "الخدمات", "المشاريع", "المدونة"],
-        "href": ["#home", "#services-section", "#projects-section", "/blog"]
+        "links": ["الرئيسية", "الخدمات", "المشاريع"],
+        "href": ["#home", "#services-section", "#projects-section"]
       },
       {
         "title": "روابط مهمة",
-        "links": ["الأسئلة الشائعة", "سياسة الخصوصية", "الشروط والأحكام", "تواصل معنا"],
-        "href": ["#faq-section", "#privacy-policy-section", "#terms-conditions-section", "/contact"]
+        "links": ["سياسة الخصوصية", "الشروط والأحكام", "تواصل معنا"],
+        "href": [ "#privacy-policy-section", "#terms-conditions-section", "/contact"]
       }
     ],
     "copyright": "© 2025. جميع الحقوق محفوظة."
@@ -165,6 +165,8 @@
     "contactWithPhone": "تواصل عبر الهاتف",
     "contactWithWhatsApp": "تواصل عبر واتساب",
     "contactWithEmail": "تواصل عبر البريد الإلكتروني",
+    "ourLocation": "موقعنا",
+    "locationAddress": "دبي",
     "sendMessage": "أرسل لنا رسالة",
     "fullName": "الاسم الكامل",
     "emailAddress": "البريد الإلكتروني",

@@ -7,6 +7,7 @@ import SkeletonCard  from '@/components/ui/SkeletonCard'
 import Image from "next/image";
 import { useParams } from 'next/navigation'
 import { useTranslation } from '@/app/i18n/client'
+import Link from "next/link";
   const ServicesSection = () => {
   const params = useParams()
   const lng = params?.lng || 'en'
@@ -50,7 +51,8 @@ import { useTranslation } from '@/app/i18n/client'
         {loading ? (
           <SkeletonCard  length={4} className="md:!min-w-[200px]"/>
         ) : services.length > 0 && (
-          <div className="services-data grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4  sm:gap-6">
+          <Link href={`/${lng}/contact`}>
+          <div className="cursor-pointer services-data grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-4  sm:gap-6">
             {services.map((service) => (
               <div className="flex justify-center" key={service.id}>  
               <Card  className="service-card bg-white w-full sm:max-w-[198px] rounded-lg border border-[#e8e8e8] hover:shadow-lg transition-shadow overflow-hidden">
@@ -67,7 +69,7 @@ import { useTranslation } from '@/app/i18n/client'
                   <h3 className=" px-6 py-3 text-center text-xl font-bold text-[#572b0a] ">
                     {service.title?.[lng] || service.title}
                   </h3>
-                  <p className=" px-4 pb-3 text-[12px]  text-center text-[#666666] leading-[16px]">
+                  <p className=" px-4 pb-3 text-[14px]  text-center text-[#666666] leading-[16px]">
                     {service.description?.[lng] || service.description}
                   </p>
                 </div>
@@ -75,6 +77,7 @@ import { useTranslation } from '@/app/i18n/client'
               </div>
             ))}
           </div>
+          </Link>
         )}
       </div>
     </section>

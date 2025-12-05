@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase-server'
 import Button from '@/components/ui/Button'
 import { HiArrowLongDown } from "react-icons/hi2";
 import { useTranslation } from '../../i18n/index'
+import Link from 'next/link'
 
 export default async function ServicesPage({ params }) {
   const { lng } = await params
@@ -12,7 +13,7 @@ export default async function ServicesPage({ params }) {
   const { data: services, error } = await supabase
     .from('services')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: true });
   
   const displayedServices = services ? services.slice(0, 8) : [];
 
@@ -38,6 +39,7 @@ export default async function ServicesPage({ params }) {
               </div>
             ) : (
               <>
+              <Link href="/contact">
                 <div className="pb-20 services-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
                   {displayedServices.map((service) => (
                     <div
@@ -82,6 +84,7 @@ export default async function ServicesPage({ params }) {
                     </Button>
                   </div>
                 )}
+                </Link>
               </>
             )}
 

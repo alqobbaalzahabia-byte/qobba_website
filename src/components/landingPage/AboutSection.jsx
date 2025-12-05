@@ -148,7 +148,7 @@ const AboutSection = () => {
                   </p>
             
               </div>
-             <div className={`flex w-full ${lng === 'ar' ? 'justify-start' : 'justify-start'}`}>
+             <div className={`hidden flex w-full ${lng === 'ar' ? 'justify-start' : 'justify-start'}`}>
               <Button className=" cursor-pointer h-auto w-auto min-w-[199px] px-6 py-3 rounded-2xl bg-gradient-button hover:opacity-90 transition-opacity">
                 <span className=" font-bold text-white text-lg md:text-xl">
                   {readMore}

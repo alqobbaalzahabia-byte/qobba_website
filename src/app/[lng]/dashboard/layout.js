@@ -13,15 +13,6 @@ export default function DashboardLayout({ children, params }) {
   const pathname = usePathname()
   const router = useRouter()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [adminEmail, setAdminEmail] = useState('')
-
-  useEffect(() => {
-    const email = localStorage.getItem('adminEmail')
-    console.log('email',email)
-    if (email) {
-      setAdminEmail(email)
-    }
-  }, [])
 
   const isActive = (path) => {
     return pathname === `/${lng}/dashboard${path}`
