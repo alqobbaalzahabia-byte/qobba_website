@@ -1,24 +1,34 @@
 'use client'
 
-import { FaFacebookF } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from '@/app/i18n/client'
+import { supabase } from '@/lib/supabase'
 import mainLogo from '@/../public/assets/main-logo.svg';
 
-const socialLinks = [
-  { label: 'facebook', icon: <FaFacebookF /> },
-  { label: 'instagram', icon: <FaInstagram /> },
-  { label: 'twitter', icon: <FaXTwitter /> },
-];
+const icons = { facebook: <FaFacebookF />, instagram: <FaInstagram />, twitter: <FaXTwitter /> };
 
 const Footer = ({ lng = 'ar' }) => {
   const { t } = useTranslation(lng)
   const sections = t('footer.sections', { returnObjects: true });  
   const footerSections = Array.isArray(sections) ? sections : [];
+  const [socialLinks, setSocialLinks] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from('social_links').select('*').limit(1).single();
+      if (data) {
+        setSocialLinks(
+          Object.keys(data)
+            .filter(k => k !== 'id' && k !== 'created_at' && data[k])
+            .map(platform => ({ platform, url: data[platform], icon: icons[platform] }))
+        );
+      }
+    })();
+  }, []);
   return (
     <footer className="bg-[linear-gradient(180deg,rgba(243,243,243,1)_0%,rgba(255,249,236,1)_100%)]  overflow-hidden">
       <div className="container mx-auto lg:max-w-[1100px] px-4 sm:px-2 py-4 gap-10 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 ">
@@ -89,14 +99,16 @@ const Footer = ({ lng = 'ar' }) => {
         <div className="ml-auto flex justify-between items-center gap-4 text-sm  ">
           <p className={`${lng === 'ar' ? '-order-8' : ''}`}>{t('footer.copyright')}</p>
           <div className="flex items-center gap-4">
-            {socialLinks.map((social) => (
+            {socialLinks.map(({ platform, url, icon }) => (
               <a
-                key={social.label}
-                href="#"
+                key={platform}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-full border bg-[#F0A647] text-white border-white/30 p-2 transition hover:border-white hover:text-[#F0A647] hover:bg-gray-200"
               >
-                <span className="sr-only">{social.label}</span>
-                {social.icon}
+                <span className="sr-only">{platform}</span>
+                {icon}
               </a>
             ))}
           </div>

@@ -120,12 +120,12 @@
       {
         "title": "الصفحات",
         "links": ["الرئيسية", "الخدمات", "المشاريع"],
-        "href": ["#home", "#services-section", "#projects-section"]
+        "href": ["/#home", "/#services-section", "/#projects-section"]
       },
       {
         "title": "روابط مهمة",
         "links": ["سياسة الخصوصية", "الشروط والأحكام", "تواصل معنا"],
-        "href": [ "#privacy-policy-section", "#terms-conditions-section", "/contact"]
+        "href": [ "/privacy", "/terms", "/contact"]
       }
     ],
     "copyright": "© 2025. جميع الحقوق محفوظة."
@@ -203,5 +203,11 @@
         "description": "يدعم فريق الشارقة عملياتنا في شمال الإمارات ويقدم حلولاً سريعة وفعالة."
       }
     }
-}
+  },
+  "terms": {
+    "title": "الشروط والأحكام"
+  },
+  "privacy": {
+    "title": "سياسة الخصوصية"
+  }
 }
