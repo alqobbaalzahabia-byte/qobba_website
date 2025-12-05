@@ -41,7 +41,9 @@ export default async function ProjectsPage({ params }) {
             ) : (
               <>
                 <div className="pb-20 projects-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+                 
                   {displayedProjects.map((project) => (
+                 <Link href={`/${lng}/contact`} key={project.id}>
                     <div
                       key={project.id}
                       className="w-full bg-white rounded-2xl overflow-hidden transition-transform hover:scale-105 cursor-pointer border border-gray-200 p-3"
@@ -69,6 +71,7 @@ export default async function ProjectsPage({ params }) {
                         </p>
                       </div>
                     </div>
+                  </Link>
                   ))}
                 </div>
 
