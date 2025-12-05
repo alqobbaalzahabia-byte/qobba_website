@@ -6,17 +6,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import mainLogo from '@/../public/assets/main-logo.svg'
-import ArabicFlag from '@/../public/assets/arabic-flag.svg'
-import { IoIosArrowDown } from "react-icons/io";
-import { FaCheck } from "react-icons/fa6";
 import Button from "../ui/Button";
-import { languages as supportedLanguages } from '../../app/i18n/settings';
+import LanguageSwitcher from './LanguageSwitcher';
 const Header = ({ lng }) => {
   const { t } = useTranslation(lng);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
@@ -33,21 +28,6 @@ const Header = ({ lng }) => {
       };
     }
   }, [isMobileMenuOpen]);
-
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'ar', label: 'العربية' }
-  ];
-
-  const currentLanguage = languages.find(lang => lang.code === lng) || languages[0];
-
-  const switchLanguage = (newLng) => {
-    const segments = pathname.split('/').filter(Boolean);
-    const pathWithoutLang = segments.filter(seg => !supportedLanguages.includes(seg)).join(' ');
-    const newPath = `/${newLng}${pathWithoutLang ? '/' + pathWithoutLang : ''}`;
-    router.push(newPath);
-    setIsLanguageDropdownOpen(false);
-  };
 
   // get name of page from path name and check to make this as active link
   const isActive = (path) => {
@@ -84,63 +64,8 @@ const Header = ({ lng }) => {
               </Button>
             </Link>
 
-            <div className="relative">
-              <button
-                onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
-                className=" h-[45px]  bg-white rounded-xl flex items-center justify-between gap-1  hover:opacity-90 transition-opacity cursor-pointer"
-              >
-                <div className="inline-flex items-center justify-center gap-2 lg:px-4 lg:px-3">
-                <IoIosArrowDown className={`text-lg text-gray-400 transition-transform duration-200 ${isLanguageDropdownOpen ? 'rotate-180' : ''}`} />
-
-                  <div className="font-medium text-[#7f7f7f] text-lg tracking-[0] leading-[normal] whitespace-nowrap ">
-                    {currentLanguage.label}
-                  </div>
-                  {lng === 'ar' ? (
-                    <Image
-                      className="w-5 h-5"
-                      alt="Arabic"
-                      src={ArabicFlag}
-                      width={20}
-                      height={20}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
-
-                    />
-                  ) : null}
-                </div>
-               
-              </button>
-
-              {isLanguageDropdownOpen && (
-                <div className="absolute top-full mt-2 right-0 w-[140px] bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => switchLanguage(lang.code)}
-                      className={`w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer ${
-                        lang.code === lng ? 'bg-[#FAB000]/10 text-[#FAB000] font-bold' : 'text-[#7f7f7f]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        {lang.code === 'ar' && (
-                          <Image  
-                            className="w-5 h-5"
-                            alt="Arabic "
-                            src={ArabicFlag}
-                            width={20}
-                            height={20}
-                          />
-                        )}
-                        <div className=" font-medium text-base text-start">
-                          {lang.label}
-                        </div>
-                      </div>
-                      {lang.code === lng && (
-                        <FaCheck/>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
+            <div className="language-switcher relative">
+              <LanguageSwitcher lng={lng} />
             </div>
           </div>
 
@@ -259,61 +184,7 @@ const Header = ({ lng }) => {
               {/* Language Switcher */}
               <li className="mb-6">
                 <div className="relative">
-                  <button
-                    onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
-                    className="w-full h-[45px] bg-white rounded-xl flex items-center justify-between gap-1 px-2.5 hover:opacity-90 transition-opacity cursor-pointer"
-                  >
-                    <div className="inline-flex items-center gap-1">
-                      {lng === 'ar' ? (
-                        <Image
-                          className="w-5 h-5"
-                          alt="Arabic"
-                            src={ArabicFlag}
-                            width={20}
-                            height={20}
-                        />
-                      ) : null}
-                      <div className=" font-medium text-[#7f7f7f] text-lg tracking-[0] leading-[normal] whitespace-nowrap ">
-                        {currentLanguage.label}
-                      </div>
-                    </div>
-                    <IoIosArrowDown className={`text-lg text-gray-400 transition-transform duration-200 ${isLanguageDropdownOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  {isLanguageDropdownOpen && (
-                    <div className="absolute top-full mt-2 left-0 right-0 w-full bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50">
-                      {languages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => {
-                            switchLanguage(lang.code);
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className={`w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer ${
-                            lang.code === lng ? 'bg-[#FAB000]/10 text-[#FAB000] font-bold' : 'text-[#7f7f7f]'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            {lang.code === 'ar' && (
-                              <Image
-                                className="w-5 h-5"
-                                alt="Arabic"
-                                src={ArabicFlag}
-                                width={20}
-                                height={20}
-                              />
-                            )}
-                            <div className=" font-medium text-base text-start">
-                              {lang.label}
-                            </div>
-                          </div>
-                          {lang.code === lng && (
-                            <FaCheck/>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                 <LanguageSwitcher lng={lng} />
                 </div>
               </li>
 

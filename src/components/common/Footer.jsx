@@ -1,9 +1,12 @@
+'use client'
+
 import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from '@/app/i18n/client'
 import mainLogo from '@/../public/assets/main-logo.svg';
 
 const socialLinks = [
@@ -12,7 +15,8 @@ const socialLinks = [
   { label: 'twitter', icon: <FaXTwitter /> },
 ];
 
-const Footer = ({ t = (key) => key, lng = 'ar' }) => {
+const Footer = ({ lng = 'ar' }) => {
+  const { t } = useTranslation(lng)
   const sections = t('footer.sections', { returnObjects: true });  
   const footerSections = Array.isArray(sections) ? sections : [];
   return (
