@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 import ServiceCard from './ServiceCard'
 import EditServiceModal from './EditServiceModal'
 
@@ -22,20 +23,23 @@ export default function ServicesList({ services, error, lng }) {
 
   const handleSave = async (serviceId, formData) => {
     try {
-      const response = await fetch(`/api/services/${serviceId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
+      const { data, error } = await supabase
+        .from('services')
+        .update({
+          title: formData.title,
+          description: formData.description,
+          image: formData.image,
+          // created_at: new Date().toISOString()
+        })
+        .eq('id', serviceId)
+        .select()
+        .single()
 
-      if (response.ok) {
-        router.refresh()
-      } else {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to update service')
+      if (error) {
+        throw new Error(error.message || 'Failed to update service')
       }
+
+      router.refresh()
     } catch (error) {
       console.error('Error updating service:', error)
       throw error
@@ -45,18 +49,19 @@ export default function ServicesList({ services, error, lng }) {
   const handleDelete = async (service) => {
     if (confirm(`Are you sure you want to delete "${service.title?.[lng] || service.title || 'this service'}"?`)) {
       try {
-        const response = await fetch(`/api/services/${service.id}`, {
-          method: 'DELETE',
-        })
+        const { error } = await supabase
+          .from('services')
+          .delete()
+          .eq('id', service.id)
 
-        if (response.ok) {
-          router.refresh()
-        } else {
-          alert('Failed to delete service')
+        if (error) {
+          throw new Error(error.message || 'Failed to delete service')
         }
+
+        router.refresh()
       } catch (error) {
         console.error('Error deleting service:', error)
-        alert('An error occurred while deleting the service')
+        alert(error.message || 'An error occurred while deleting the service')
       }
     }
   }

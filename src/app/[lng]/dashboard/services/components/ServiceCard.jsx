@@ -86,7 +86,7 @@ export default function ServiceCard({ service, lng, onEdit, onDelete }) {
       )}
       <div className="p-4">
         <h3 className="font-bold text-gray-900 mb-2 text-lg">
-          {service.title?.[lng] || service.title || 'Untitled Service'}ff
+          {service.title?.[lng] || service.title || 'Untitled Service'}
         </h3>
         <p className="text-sm text-gray-600 line-clamp-3">
           {service.description?.[lng] || service.description || 'No description'}
