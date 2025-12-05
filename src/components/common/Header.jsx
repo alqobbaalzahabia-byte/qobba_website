@@ -40,7 +40,6 @@ const Header = ({ lng }) => {
     { label: t('nav.services'), href: `/${lng}/services`, active: isActive('/services') },
     { label: t('nav.projects'), href: `/${lng}/projects`, active: isActive('/projects') },
     { label: t('nav.about'), href: `/${lng}/about-us`, active: isActive('/about') },
-    { label: t('nav.blog'), href: `/${lng}/blog`, active: isActive('/blog') },
   ];
 
   const toggleMobileMenu = () => {

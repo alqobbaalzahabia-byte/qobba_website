@@ -41,12 +41,12 @@ export default function ServiceCard({ service, lng, onEdit, onDelete }) {
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative">
+    <div className=" border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative">
       {/* Three dots menu button */}
-      <div className="absolute top-2 right-2 z-10" ref={menuRef}>
+      <div className=" absolute top-2 right-2 z-10" ref={menuRef}>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="p-2 rounded-full bg-white/90 hover:bg-white shadow-md transition-all hover:scale-110"
+          className="cursor-pointer p-2 rounded-full bg-white/90 hover:bg-white shadow-md transition-all hover:scale-110"
           aria-label="Service options"
         >
           <HiDotsVertical className="text-gray-600 text-lg" />

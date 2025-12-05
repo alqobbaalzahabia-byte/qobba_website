@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button'
 import { HiArrowLongDown } from "react-icons/hi2";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { useTranslation } from '../../i18n/index'
+import Link from 'next/link'
 
 export default async function ProjectsPage({ params }) {
   const { lng } = await params

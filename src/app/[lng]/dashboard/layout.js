@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { use, useState } from 'react'
+import { use, useState, useEffect } from 'react'
 import { TiThMenu } from "react-icons/ti";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaTools, FaFolder, FaBlog, FaInfoCircle } from "react-icons/fa";
@@ -11,6 +11,11 @@ export default function DashboardLayout({ children, params }) {
   const { lng } = use(params)
   const pathname = usePathname()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
+  useEffect(() => {
+    document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr'
+    document.documentElement.lang = lng
+  }, [lng])
 
   const isActive = (path) => {
     return pathname === `/${lng}/dashboard${path}`

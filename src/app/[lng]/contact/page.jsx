@@ -1,7 +1,7 @@
 "use client";
 
 import React, { use, useState } from "react";
-import { FiMail, FiPhone, FiSend } from "react-icons/fi";
+import { FiMail, FiPhone, FiSend, FiMapPin } from "react-icons/fi";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import mainLogo from "@/../public/assets/main-logo.svg";
@@ -270,6 +270,18 @@ const Screen = ({ params }) => {
                   </div>
                 </div>
 
+                <div>
+                  <h3 className="font-bold text-[#172436] text-lg sm:text-xl mb-3">
+                    {t('contactUs.ourLocation')}
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    <FiMapPin className="w-5 h-5 text-[#f0a647]" />
+                    <span className="text-[#172436] text-base sm:text-lg font-medium">
+                      {t('contactUs.locationAddress')}
+                    </span>
+                  </div>
+                </div>
+
                 <div className="relative bg-white rounded-xl border border-solid border-[#e5e5e5] shadow-cards overflow-hidden h-[300px] sm:h-[350px] mt-8">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d225.5225117051732!2d55.32891211295984!3d25.25846619764613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5cdbc56cbec1%3A0x92f489fc28aa3fff!2sHorizon%20Building!5e0!3m2!1sen!2sae!4v1764406448359!5m2!1sen!2sae"
@@ -453,7 +465,7 @@ const Screen = ({ params }) => {
             </section>
           </div>
 
-          <div className="mt-16 pt-12">
+          <div className="mt-16 pt-12 hidden">
             <h2 className="font-bold text-[#172436] text-2xl sm:text-3xl text-center mb-12">
               {t('contactUs.ourAgents')}
             </h2>

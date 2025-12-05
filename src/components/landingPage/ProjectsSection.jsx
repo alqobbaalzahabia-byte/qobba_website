@@ -87,7 +87,7 @@ const ProjectsSection = ({ t, lng }) => {
         ) : projects.length > 0 ? (
           <div className="projects-data">
             {/* Row1: 3 card grid style */}
-            <div className="projects-row-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2  gap-6">
+            <div className="hidden projects-row-1  grid-cols-1 sm:grid-cols-2 md:grid-cols-2  gap-6">
               {/* two cards */}
               {projects.length >= 2 && (
                 <div className="relative lg:max-w-[522px] flex flex-col gap-6 mb-6  ">
@@ -157,6 +157,7 @@ const ProjectsSection = ({ t, lng }) => {
 
             {/* Row2: Four Smaller Cards */}
             {projects.length >= 4 && (
+              <Link href={`/${lng}/projects`}>
               <div className="relative grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 gap-0 mb-8">
                 {projects.slice(3, 7).map((project) => (
                   <div key={project.id} className="relative flex justify-center group overflow-hidden rounded-[20px]">
@@ -174,7 +175,7 @@ const ProjectsSection = ({ t, lng }) => {
                             <div className={` w-[50px] h-[50px] sm:w-[25px] sm:h-[25px]  md:w-[35px] md:h-[35px]  ${lng === 'ar' ? 'order-2' : ''} bg-white rounded-full  flex items-center justify-center shrink-0`}>
                               <HiArrowNarrowUp className="text-[12px] md:text-xl -rotate-45 text-gray-500" />
                             </div>
-                            <h3 className="font-bold px-4 md:px-4  bg-white w-[80%] sm:max-w-[212px] rounded-[10px] py-1.5 text-[#7c7c7c] sm:text-[11px] md:text-[14px] lg:text-[16px] leading-[normal]">
+                            <h3 className=" font-bold px-4 md:px-4  bg-white w-[80%] sm:max-w-[212px] rounded-[10px] py-1.5 text-[#7c7c7c] sm:text-[11px] md:text-[14px] lg:text-[16px] leading-[normal]">
                               {project.title?.[lng]}
                             </h3>
                           </div>
@@ -185,6 +186,7 @@ const ProjectsSection = ({ t, lng }) => {
                   </div>
                 ))}
               </div>
+              </Link>
             )}
 
             {/* view all button */}

@@ -3,8 +3,7 @@
     "home": "Home",
     "services": "Services",
     "projects": "Projects",
-    "about": "About Us",
-    "blog": "Blog"
+    "about": "About Us"
   },
   "header": {
     "contact": "Contact Us",
@@ -31,6 +30,7 @@
   },
   "services": {
     "title": "Our Services We Focus On",
+    "createService": "Create Service",
     "searchEngines": {
       "title": "Search Engines",
       "description": "This text can be placed on any design without problems, it won't look like copied text"
@@ -112,19 +112,19 @@
     }
   },
   "footer": {
-    "description": "This placeholder text can fit any design without issues; it's temporary filler until final copy is ready.",
+    "description": "We don’t just offer a single service… we build a fully integrated digital ecosystem that helps you grow, attract your customers, deliver your message clearly, and achieve tangible results that support your success.",
     "newsletterTitle": "Subscribe to our newsletter to get the latest market updates",
     "newsletterPlaceholder": "Email",
     "newsletterButton": "Subscribe Now",
     "sections": [
       {
         "title": "Pages",
-        "links": ["Home", "Services", "Projects", "Blog"],
-        "href": ["#home", "#services-section", "#projects-section", "/blog"]
+        "links": ["Home", "Services", "Projects"],
+        "href": ["#home", "#services-section", "#projects-section"]
       },
       {
         "title": "Useful Links",
-        "links": ["FAQ", "Privacy Policy", "Terms & Conditions", "Contact Us"],
+        "links": ["Privacy Policy", "Terms & Conditions", "Contact Us"],
         "href": ["#faq-section", "#privacy-policy-section", "#terms-conditions-section", "/contact"]
       }
     ],
@@ -164,6 +164,8 @@
     "contactWithPhone": "Contact With Phone",
     "contactWithWhatsApp": "Contact With WhatsApp",
     "contactWithEmail": "Contact With Email",
+    "ourLocation": "Our Location",
+    "locationAddress": "Dubai",
     "sendMessage": "Send us a Message",
     "fullName": "Full Name",
     "emailAddress": "Email Address",

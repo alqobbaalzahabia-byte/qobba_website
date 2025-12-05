@@ -81,7 +81,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
     try {
       // Generate unique filename
       const fileExt = selectedFile.name.split('.').pop()
-      const fileName = `services/${service.id}_${Date.now()}.${fileExt}`
+      const fileName = `${service.id}_${Date.now()}.${fileExt}`
       
       // Upload to Supabase storage
       const { data: uploadData, error: uploadError } = await supabase.storage
