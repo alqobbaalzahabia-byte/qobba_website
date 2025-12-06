@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
+import { supabase } from "@/lib/supabase";
 
 export default function AuthMiddleware({ children, lng }) {
   const router = useRouter()
@@ -9,18 +10,45 @@ export default function AuthMiddleware({ children, lng }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('adminToken')
-      
-      if (!token) {
-        router.push(`/${lng}/login`)
-      } else {
+    const checkAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+
+        if (error || !session) {
+          router.push(`/${lng}/login`)
+          return
+        }
+
+        const { data: adminData, error: adminError } = await supabase
+          .from('admins')
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+          console.log('from authmid',adminData)
+        if (adminError || !adminData) {
+          await supabase.auth.signOut()
+          router.push(`/${lng}/login`)
+          return
+        }
+
         setIsAuthenticated(true)
+      } catch (err) {
+        console.error('Auth check error:', err)
+        router.push(`/${lng}/login`)
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
 
     checkAuth()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        router.push(`/${lng}/login`)
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [router, lng, pathname])
 
   if (isLoading) {

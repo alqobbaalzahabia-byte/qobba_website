@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Image from 'next/image'
 import OverlayRight from '@/../public/assets/about-overlay.png'
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -20,21 +21,41 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
 
-    const ADMIN_EMAIL = 'admin@gmail.com'
-    const ADMIN_PASSWORD = '1234'
-
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      console.log('email',email)
-      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        localStorage.setItem('adminToken', 'authenticated')
-        localStorage.setItem('adminEmail', email)
-        router.push(`/${lng}/dashboard`)
-      } else {
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (authError) {
         setError('Invalid email or password')
+        setLoading(false)
+        return
       }
+
+      const { data: adminData, error: adminError } = await supabase
+        .from('admins')
+        .select('*')
+        .eq('id', authData.user.id)
+        .single()
+          console.log('from login page',adminData)
+          console.log('from login page error',adminError)
+
+
+      if (adminError || !adminData) {
+        await supabase.auth.signOut()
+        setError('You do not have admin access')
+        setLoading(false)
+        return
+      }
+
+      localStorage.setItem('adminToken', 'authenticated')
+      localStorage.setItem('adminEmail', authData.user.email)
+      localStorage.setItem('adminId', authData.user.id)
+      
+      router.push(`/${lng}/dashboard`)
     } catch (err) {
-        console.log('errorrr',err)
+      console.error('Login error:', err)
       setError('An error occurred. Please try again.')
     } finally {
       setLoading(false)
@@ -98,7 +119,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-[#f0a647] to-[#FAB000] text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-linear-to-r from-[#f0a647] to-[#FAB000] text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
