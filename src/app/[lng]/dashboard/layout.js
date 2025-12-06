@@ -1,21 +1,18 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { use, useState, useEffect } from 'react'
+import { usePathname,useRouter } from 'next/navigation'
+import { use, useState,useEffect } from 'react'
 import { TiThMenu } from "react-icons/ti";
 import { IoCloseSharp } from "react-icons/io5";
-import { FaTools, FaFolder, FaBlog, FaInfoCircle } from "react-icons/fa";
+import { FaTools, FaFolder, FaBlog, FaInfoCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
 import LanguageSwitcher from '@/components/common/LanguageSwitcher'
+import AuthMiddleware from '@/components/auth/AuthMiddleware'
 
 export default function DashboardLayout({ children, params }) {
   const { lng } = use(params)
   const pathname = usePathname()
+  const router = useRouter()
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-
-  useEffect(() => {
-    document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr'
-    document.documentElement.lang = lng
-  }, [lng])
 
   const isActive = (path) => {
     return pathname === `/${lng}/dashboard${path}`
@@ -32,7 +29,14 @@ export default function DashboardLayout({ children, params }) {
     setIsSidebarOpen(!isSidebarOpen)
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken')
+    localStorage.removeItem('adminEmail')
+    router.push(`/${lng}/login`)
+  }
+
   return (
+    <AuthMiddleware lng={lng}>
     <div className="min-h-screen bg-[#fdfef9]">
       {/* Sidebar */}
       <aside
@@ -72,6 +76,14 @@ export default function DashboardLayout({ children, params }) {
 
           {/* Language Switcher */}
           <LanguageSwitcher lng={lng}  />
+          
+          <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+            >
+              <FaSignOutAlt />
+              <span className="font-medium">Logout</span>
+            </button>
         </div>
       </aside>
 
@@ -92,6 +104,7 @@ export default function DashboardLayout({ children, params }) {
         {children}
       </main>
     </div>
+    </AuthMiddleware>
   )
 }
 

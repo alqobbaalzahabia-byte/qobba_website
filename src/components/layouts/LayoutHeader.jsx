@@ -8,8 +8,9 @@ import ChatBot from '@/components/common/ChatBot'
 export default function ConditionalLayout({ children, lng }) {
   const pathname = usePathname()
   const isDashboard = pathname?.includes('/dashboard')
+  const isLogin = pathname?.includes('/login')
 
-  if (isDashboard) {
+  if (isDashboard || isLogin) {
     return <>{children}</>
   }
 
