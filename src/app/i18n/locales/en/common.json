@@ -125,7 +125,7 @@
       {
         "title": "Useful Links",
         "links": ["Privacy Policy", "Terms & Conditions", "Contact Us"],
-        "href": ["#faq-section", "#privacy-policy-section", "#terms-conditions-section", "/contact"]
+          "href": ["/privacy", "/terms", "/contact"]
       }
     ],
     "copyright": "© 2025. All rights reserved."
@@ -202,5 +202,11 @@
         "description": "The Sharjah team supports operations across Northern UAE, delivering fast and reliable solutions."
       }
     }
+  },
+  "terms": {
+    "title": "Terms & Conditions"
+  },
+  "privacy": {
+    "title": "Privacy Policy"
   }
 }

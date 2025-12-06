@@ -156,10 +156,10 @@ const ProjectsSection = ({ t, lng }) => {
             </div>
 
             {/* Row2: Four Smaller Cards */}
-            {projects.length >= 4 && (
+            {projects && (
               <Link href={`/${lng}/projects`}>
               <div className="relative grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 gap-0 mb-8">
-                {projects.slice(3, 7).map((project) => (
+                {projects.slice(0, 4).map((project) => (
                   <div key={project.id} className="relative flex justify-center group overflow-hidden rounded-[20px]">
                     {project.image && (
                       <div className="relative w-full sm:w-[247px] md:h-[180px] lg:h-[250px] overflow-hidden">
