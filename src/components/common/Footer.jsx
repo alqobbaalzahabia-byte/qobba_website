@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useTranslation } from '@/app/i18n/client'
 import { supabase } from '@/lib/supabase'
 import mainLogo from '@/../public/assets/main-logo.svg';
+import { toast } from 'react-toastify';
 
 const icons = { facebook: <FaFacebookF />, instagram: <FaInstagram />, twitter: <FaXTwitter /> };
 
@@ -16,6 +17,8 @@ const Footer = ({ lng = 'ar' }) => {
   const sections = t('footer.sections', { returnObjects: true });  
   const footerSections = Array.isArray(sections) ? sections : [];
   const [socialLinks, setSocialLinks] = useState([]);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -29,6 +32,48 @@ const Footer = ({ lng = 'ar' }) => {
       }
     })();
   }, []);
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate email
+    if (!email || !email.includes('@')) {
+      toast.error(lng === 'ar' ? 'الرجاء إدخال بريد إلكتروني صحيح' : 'Please enter a valid email');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { data, error } = await supabase
+        .from('subscribers')
+        .insert([
+          { 
+            email: email,
+            subscribed_at: new Date().toISOString(),
+            is_active : true,
+          }
+        ])
+        .select();
+
+      if (error) {
+        if (error.code === '23505') {
+          toast.error(lng === 'ar' ? 'هذا البريد الإلكتروني مسجل بالفعل' : 'This email is already subscribed');
+        } else {
+          throw error;
+        }
+      } else {
+        toast.success(lng === 'ar' ? 'تم الاشتراك بنجاح!' : 'Successfully subscribed!');
+        setEmail('');
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      toast.error(lng === 'ar' ? 'حدث خطأ، يرجى المحاولة مرة أخرى' : 'An error occurred, please try again');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-[linear-gradient(180deg,rgba(243,243,243,1)_0%,rgba(255,249,236,1)_100%)]  overflow-hidden">
       <div className="container mx-auto lg:max-w-[1100px] px-4 sm:px-2 py-4 gap-10 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 ">
@@ -41,7 +86,7 @@ const Footer = ({ lng = 'ar' }) => {
                 src={mainLogo}
                 width={111}
                 height={111}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw)"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <p className="text-sm md:text-[18px] text-[#585858] bg-opacity-60 rounded-lg py-3 leading-7">
@@ -52,22 +97,28 @@ const Footer = ({ lng = 'ar' }) => {
             </h2>
           </div>
 
-          <form className="flex flex-col md:gap-3 md:w-[600px]">
+          <div className="flex flex-col md:gap-3 md:w-[600px]">
             <div className="flex flex-col gap-3 sm:flex-row relative">
               <input
                 id="newsletter-email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('footer.newsletterPlaceholder')}
-                className="w-full rounded-xl border border-white/30 bg-[#FFFFFF] px-4 py-3 text-sm text-[#585858] placeholder:text-[#585858]/60 focus:border-white focus:outline-none"
+                disabled={isSubmitting}
+                className="w-full rounded-xl border border-white/30 bg-[#FFFFFF] px-4 py-3 text-sm text-[#585858] placeholder:text-[#585858]/60 focus:border-white focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                required
               />
               <button
-                type="submit"
-                className={`${lng === 'ar' ? 'left-0' : 'right-0'} cursor-pointer absolute rounded-xl bg-[#F0A647] px-6 h-full text-sm font-semibold text-white transition hover:bg-[#e8952f]`}
+                type="button"
+                onClick={handleNewsletterSubmit}
+                disabled={isSubmitting}
+                className={`${lng === 'ar' ? 'left-0' : 'right-0'} cursor-pointer absolute rounded-xl bg-[#F0A647] px-6 h-full text-sm font-semibold text-white transition hover:bg-[#e8952f] disabled:opacity-50 disabled:cursor-not-allowed`}
               >
-                {t('footer.newsletterButton')}
+                {isSubmitting ? (lng === 'ar' ? 'جاري الإرسال...' : 'Sending...') : t('footer.newsletterButton')}
               </button>
             </div>
-          </form>
+          </div>
         </div>
 
         <div className="flex justify-end gap-10  lg:pt-[100px] ">
