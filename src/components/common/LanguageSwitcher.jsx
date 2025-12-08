@@ -33,7 +33,7 @@ export default function LanguageSwitcher({ lng }) {
         onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
         className="h-[45px] w-full bg-white rounded-xl flex items-center justify-between gap-1 hover:opacity-90 transition-opacity cursor-pointer"
       >
-        <div className="inline-flex items-center justify-center gap-2 lg:px-4 lg:px-3">
+        <div className="inline-flex items-center justify-center gap-2 lg:px-3">
           <IoIosArrowDown 
             className={`text-lg text-gray-400 transition-transform duration-200 ${
               isLanguageDropdownOpen ? 'rotate-180' : ''
