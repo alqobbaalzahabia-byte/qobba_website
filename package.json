@@ -16,7 +16,7 @@
     "accept-language": "^3.0.20",
     "i18next": "^25.6.3",
     "i18next-resources-to-backend": "^1.2.1",
-    "next": "16.0.3",
+    "next": "^16.0.7",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.68.0",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "baseline-browser-mapping": "^2.9.5",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4"
