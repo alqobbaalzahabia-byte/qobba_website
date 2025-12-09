@@ -208,5 +208,10 @@
   },
   "privacy": {
     "title": "Privacy Policy"
+  },
+  "team": {
+    "title": "Our Team",
+    "description": "Our team works professionally to ensure the best level of support and service whenever you need help",
+    "no_members": "No team members available"
   }
 }
