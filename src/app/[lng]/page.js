@@ -36,13 +36,11 @@ const App = ({ params }) => {
       {/* About Section */}
       <AboutSection />
 
-
-      {/* Team Section */}
-      <TeamSection />
-
       {/* Plans Section */}
       <PlansSection t={t} lng={lng} />
 
+      {/* Team Section */}
+      <TeamSection />
 
       {/* Testimonials Section */}
       <TestimonialsSection t={t} lng={lng} />
