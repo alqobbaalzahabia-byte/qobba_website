@@ -14,11 +14,8 @@ export default async function ServicesPage({ params }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('services.title')}</h1>
-        <button className="cursor-pointer px-4 py-2 bg-gradient-button text-white rounded-lg hover:bg-orange-700 transition-colors">
-          {t('services.createService')}
-        </button>
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('services.title')}</h1>
       </div>
 
       {/* Services List */}

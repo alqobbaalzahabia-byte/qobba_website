@@ -1,34 +1,61 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Image from 'next/image'
 import OverlayRight from '@/../public/assets/about-overlay.png'
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase"
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useTranslation } from '@/app/i18n/client'
+import Input from '@/components/ui/Input'
+
+const createLoginSchema = (t) => z.object({
+  email: z
+    .string()
+    .min(1, t('login.fieldRequired'))
+    .email(t('login.fieldRequired')),
+  password: z
+    .string()
+    .min(1, t('login.fieldRequired')),
+})
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
   const params = useParams()
   const lng = params?.lng || 'en'
+  const { t } = useTranslation(lng, 'common')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const loginSchema = useMemo(() => createLoginSchema(t), [t])
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const onSubmit = async (data) => {
     setError('')
     setLoading(true)
 
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: data.email,
+        password: data.password,
       })
 
       if (authError) {
-        setError('Invalid email or password')
+        setError(t('login.invalidCredentials'))
         setLoading(false)
         return
       }
@@ -44,7 +71,7 @@ export default function LoginPage() {
 
       if (adminError || !adminData) {
         await supabase.auth.signOut()
-        setError('You do not have admin access')
+        setError(t('login.noAdminAccess'))
         setLoading(false)
         return
       }
@@ -56,7 +83,7 @@ export default function LoginPage() {
       router.push(`/${lng}/dashboard`)
     } catch (err) {
       console.error('Login error:', err)
-      setError('An error occurred. Please try again.')
+      setError(t('login.errorOccurred'))
     } finally {
       setLoading(false)
     }
@@ -75,40 +102,27 @@ export default function LoginPage() {
 
       <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#572b0a] mb-2">Admin Login</h1>
-          <p className="text-gray-600">Enter your credentials to access the dashboard</p>
+          <h1 className="text-3xl font-bold text-[#572b0a] mb-2">{t('login.title')}</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f0a647] focus:border-transparent outline-none transition-all"
-              placeholder="admin@company.com"
-            />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <Input
+            id="email"
+            type="email"
+            label={t('login.email')}
+            placeholder={t('login.emailPlaceholder')}
+            error={errors.email?.message}
+            {...register('email')}
+          />
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f0a647] focus:border-transparent outline-none transition-all"
-              placeholder="Enter your password"
-            />
-          </div>
+          <Input
+            id="password"
+            type="password"
+            label={t('login.password')}
+            placeholder={t('login.passwordPlaceholder')}
+            error={errors.password?.message}
+            {...register('password')}
+          />
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -121,7 +135,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-linear-to-r from-[#f0a647] to-[#FAB000] text-white font-semibold py-3 px-6 rounded-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('login.signingIn') : t('login.signIn')}
           </button>
         </form>
       </div>

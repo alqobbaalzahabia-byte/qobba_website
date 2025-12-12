@@ -214,5 +214,41 @@
     "title": "فريقنا",
     "description": "فريقنا يعمل بكل احترافية لضمان تقديم أفضل مستوى من الدعم والخدمة في أي وقت تحتاج فيه المساعدة",
     "no_members": "لا يوجد أعضاء في الفريق متاحين حاليًا"
+  },
+  "dashboard": {
+    "title": "نظرة عامة على لوحة التحكم",
+    "welcome": "مرحباً بك في لوحة التحكم",
+    "totalProjects": "إجمالي المشاريع",
+    "totalBlogs": "إجمالي المدونات",
+    "totalTeams": "إجمالي الفرق",
+    "totalServices": "إجمالي الخدمات",
+    "totalClients": "إجمالي العملاء",
+    "recentActivity": "النشاط الأخير",
+    "newUserRegistered": "تم تسجيل مستخدم جديد",
+    "projectCompleted": "تم إكمال المشروع",
+    "paymentReceived": "تم استلام الدفع",
+    "hoursAgo": "منذ {{count}} ساعة",
+    "dayAgo": "منذ يوم واحد",
+    "sidebar": {
+      "title": "لوحة التحكم",
+      "services": "الخدمات",
+      "projects": "المشاريع",
+      "blogs": "المدونات",
+      "aboutUs": "من نحن",
+      "logout": "تسجيل الخروج"
+    }
+  },
+  "login": {
+    "title": "تسجيل الدخول ",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "emailPlaceholder": "admin@company.com",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "signIn": "تسجيل الدخول",
+    "signingIn": "جاري تسجيل الدخول...",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "noAdminAccess": "ليس لديك صلاحية الوصول كأدمن",
+    "errorOccurred": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "fieldRequired": "هذا الحقل مطلوب"
   }
 }

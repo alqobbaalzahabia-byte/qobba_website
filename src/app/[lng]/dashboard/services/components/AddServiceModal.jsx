@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { FiX, FiUpload, FiImage } from 'react-icons/fi'
 import { supabase } from '@/lib/supabase'
 import Image from 'next/image'
@@ -17,7 +17,7 @@ const serviceSchema = z.object({
   descriptionAr: z.string().min(1, 'Arabic description is required'),
 })
 
-export default function EditServiceModal({ service, isOpen, onClose, onSave, lng }) {
+export default function AddServiceModal({ isOpen, onClose, onAdd, lng }) {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [imagePreview, setImagePreview] = useState('')
@@ -25,12 +25,12 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
   const [imageUrl, setImageUrl] = useState('')
   const fileInputRef = useRef(null)
 
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
@@ -41,20 +41,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
     },
   })
 
-  useEffect(() => {
-    if (service && isOpen) {
-      const imageUrl = service.image || ''
-      setValue('titleEn', service.title.en || '')
-      setValue('titleAr', service.title.ar || '')
-      setValue('descriptionEn', service.description.en || '')
-      setValue('descriptionAr', service.description.ar || '')
-      
-      setImageUrl(imageUrl)
-      setImagePreview(imageUrl)
-      setSelectedFile(null)
-    }
-  }, [service, isOpen, setValue])
-
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -63,7 +49,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
         return
       }
       
-      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         alert('Image size should be less than 5MB')
         return
@@ -71,7 +56,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
 
       setSelectedFile(file)
       
-      // Create preview
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result)
@@ -85,11 +69,9 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
 
     setUploading(true)
     try {
-      // Generate unique filename
       const fileExt = selectedFile.name.split('.').pop()
-      const fileName = `${service.id}_${Date.now()}.${fileExt}`
+      const fileName = `services/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`
       
-      // Upload to Supabase storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('services')
         .upload(fileName, selectedFile, {
@@ -100,7 +82,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
       let imageUrl = ''
 
       if (uploadError) {
-        // If bucket doesn't exist or upload fails, try 'images' bucket
         const { data: altUploadData, error: altUploadError } = await supabase.storage
           .from('images')
           .upload(fileName, selectedFile, {
@@ -112,14 +93,12 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
           throw altUploadError
         }
 
-        // Get public URL
         const { data: urlData } = supabase.storage
           .from('images')
           .getPublicUrl(fileName)
         
         imageUrl = urlData.publicUrl
       } else {
-        // Get public URL
         const { data: urlData } = supabase.storage
           .from('services')
           .getPublicUrl(fileName)
@@ -164,21 +143,26 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
         image: finalImageUrl
       }
 
-      await onSave(service.id, formData)
+      await onAdd(formData)
       
       toast.success(
         lng === 'ar' 
-          ? 'تم تحديث الخدمة بنجاح!' 
-          : 'Service updated successfully!'
+          ? 'تم إنشاء الخدمة بنجاح!' 
+          : 'Service created successfully!'
       )
+      
+      reset()
+      setImagePreview('')
+      setSelectedFile(null)
+      setImageUrl('')
       
       onClose()
     } catch (error) {
-      console.error('Error saving service:', error)
+      console.error('Error adding service:', error)
       toast.error(
         lng === 'ar' 
-          ? 'فشل تحديث الخدمة. يرجى المحاولة مرة أخرى.' 
-          : 'Failed to update service. Please try again.'
+          ? 'فشل إنشاء الخدمة. يرجى المحاولة مرة أخرى.' 
+          : 'Failed to create service. Please try again.'
       )
     } finally {
       setLoading(false)
@@ -193,6 +177,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
     onClose()
   }
 
+  if (!isOpen) return null
 
   return (
     <div
@@ -203,9 +188,8 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
         className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">Edit Service</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Add New Service</h2>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -215,15 +199,12 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
           </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
-          {/* Image Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Service Image
+              Service Image *
             </label>
             
-            {/* Image Preview */}
             {imagePreview && (
               <div className="mb-4 relative w-full h-48 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                 <Image
@@ -235,7 +216,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
               </div>
             )}
 
-            {/* File Input */}
             <div className="space-y-3 upload-image-input">
               <input
                 ref={fileInputRef}
@@ -245,7 +225,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
                 className="hidden"
               />
               
-              <div className="flex items-center gap-3">
+              <div className="  flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
@@ -261,8 +241,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
                   </span>
                 )}
               </div>
-
-              
             </div>
           </div>
 
@@ -278,7 +256,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
           <Input
             id="titleAr"
             type="text"
-            label="Title (Arabic) *"
+            label="Title (Arabic)"
             placeholder="عنوان الخدمة بالعربية"
             error={errors.titleAr?.message}
             dir="rtl"
@@ -288,7 +266,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
           <Input
             id="descriptionEn"
             type="textarea"
-            label="Description (English) *"
+            label="Description (English)"
             placeholder="Service description in English"
             error={errors.descriptionEn?.message}
             rows={4}
@@ -298,7 +276,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
           <Input
             id="descriptionAr"
             type="textarea"
-            label="Description (Arabic) *"
+            label="Description (Arabic)"
             placeholder="وصف الخدمة بالعربية"
             error={errors.descriptionAr?.message}
             rows={4}
@@ -306,7 +284,6 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
             {...register('descriptionAr')}
           />
 
-          {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"
@@ -321,7 +298,7 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
               className="px-6 py-2 text-white bg-[#FAB000] hover:bg-[#E19F00] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading || uploading}
             >
-              {uploading ? 'Uploading Image...' : loading ? 'Saving...' : 'Save Changes'}
+              {uploading ? 'Uploading Image...' : loading ? 'Adding...' : 'Add Service'}
             </button>
           </div>
         </form>
@@ -329,4 +306,3 @@ export default function EditServiceModal({ service, isOpen, onClose, onSave, lng
     </div>
   )
 }
-

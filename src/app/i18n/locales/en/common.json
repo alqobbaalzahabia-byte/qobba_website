@@ -213,5 +213,41 @@
     "title": "Our Team",
     "description": "Our team works professionally to ensure the best level of support and service whenever you need help",
     "no_members": "No team members available"
+  },
+  "dashboard": {
+    "title": "Dashboard Overview",
+    "welcome": "Welcome to your dashboard",
+    "totalProjects": "Total Projects",
+    "totalBlogs": "Total Blogs",
+    "totalTeams": "Total Teams",
+    "totalServices": "Total Services",
+    "totalClients": "Total Clients",
+    "recentActivity": "Recent Activity",
+    "newUserRegistered": "New user registered",
+    "projectCompleted": "Project completed",
+    "paymentReceived": "Payment received",
+    "hoursAgo": "{{count}} hours ago",
+    "dayAgo": "1 day ago",
+    "sidebar": {
+      "title": "Dashboard",
+      "services": "Services",
+      "projects": "Projects",
+      "blogs": "Blogs",
+      "aboutUs": "About Us",
+      "logout": "Logout"
+    }
+  },
+  "login": {
+    "title": "Admin Login",
+    "email": "Email Address",
+    "password": "Password",
+    "emailPlaceholder": "admin@company.com",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "invalidCredentials": "Invalid email or password",
+    "noAdminAccess": "You do not have admin access",
+    "errorOccurred": "An error occurred. Please try again.",
+    "fieldRequired": "This field is required"
   }
 }

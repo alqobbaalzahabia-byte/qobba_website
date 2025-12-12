@@ -10,6 +10,8 @@ import AboutSection from '@/components/landingPage/AboutSection'
 import HeroSection from '@/components/landingPage/HeroSection'
 import PlansSection from '@/components/landingPage/PlansSection'
 import TeamSection from "@/components/landingPage/TeamSection";
+import TeamSection2 from "@/components/landingPage/TeamSection2";
+
 import TestimonialsSection from '@/components/landingPage/TestimonialsSection'
 import { use } from 'react';
 import Footer from '@/components/common/Footer'
@@ -41,6 +43,9 @@ const App = ({ params }) => {
 
       {/* Team Section */}
       <TeamSection />
+
+      {/* Team Section2 */}
+      {/* <TeamSection2 /> */}
 
       {/* Testimonials Section */}
       <TestimonialsSection t={t} lng={lng} />
