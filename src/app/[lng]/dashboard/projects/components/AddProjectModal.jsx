@@ -1,38 +1,44 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { FiX, FiUpload, FiImage } from 'react-icons/fi'
+import { FiX, FiUpload } from 'react-icons/fi'
 import { supabase } from '@/lib/supabase'
 import Image from 'next/image'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import Input from '@/components/ui/Input'
+import { toast } from 'react-toastify'
+
+const projectSchema = z.object({
+  titleEn: z.string().min(1, 'English title is required'),
+  titleAr: z.string().min(1, 'Arabic title is required'),
+  descriptionEn: z.string().min(1, 'English description is required'),
+  descriptionAr: z.string().min(1, 'Arabic description is required'),
+})
 
 export default function AddProjectModal({ isOpen, onClose, onAdd, lng }) {
-  const [formData, setFormData] = useState({
-    title: { en: '', ar: '' },
-    description: { en: '', ar: '' },
-    image: ''
-  })
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [imagePreview, setImagePreview] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
+  const [imageUrl, setImageUrl] = useState('')
   const fileInputRef = useRef(null)
 
-  const handleChange = (field, value, lang = null) => {
-    if (lang) {
-      setFormData(prev => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          [lang]: value
-        }
-      }))
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [field]: value
-      }))
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(projectSchema),
+    defaultValues: {
+      titleEn: '',
+      titleAr: '',
+      descriptionEn: '',
+      descriptionAr: '',
+    },
+  })
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0]
@@ -99,7 +105,7 @@ export default function AddProjectModal({ isOpen, onClose, onAdd, lng }) {
         imageUrl = urlData.publicUrl
       }
 
-      setFormData(prev => ({ ...prev, image: imageUrl }))
+      setImageUrl(imageUrl)
       setSelectedFile(null)
       return imageUrl
     } catch (error) {
@@ -111,54 +117,62 @@ export default function AddProjectModal({ isOpen, onClose, onAdd, lng }) {
     }
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
+  const onSubmit = async (data) => {
     setLoading(true)
     
     try {
-      let finalFormData = { ...formData }
+      let finalImageUrl = imageUrl
       
       if (selectedFile) {
-        const imageUrl = await handleImageUpload()
-        if (imageUrl) {
-          finalFormData = { ...finalFormData, image: imageUrl }
+        const uploadedUrl = await handleImageUpload()
+        if (uploadedUrl) {
+          finalImageUrl = uploadedUrl
         }
       }
       
-      if (!finalFormData.title.en) {
-        alert('English title is required')
-        setLoading(false)
-        return
+      const formData = {
+        title: {
+          en: data.titleEn,
+          ar: data.titleAr || ''
+        },
+        description: {
+          en: data.descriptionEn || '',
+          ar: data.descriptionAr || ''
+        },
+        image: finalImageUrl
       }
 
-      await onAdd(finalFormData)
+      await onAdd(formData)
       
-      setFormData({
-        title: { en: '', ar: '' },
-        description: { en: '', ar: '' },
-        image: ''
-      })
+      toast.success(
+        lng === 'ar' 
+          ? 'تم إنشاء المشروع بنجاح!' 
+          : 'Project created successfully!'
+      )
+      
+      reset()
       setImagePreview('')
       setSelectedFile(null)
+      setImageUrl('')
       
       onClose()
     } catch (error) {
       console.error('Error adding project:', error)
-      alert('Failed to add project')
+      toast.error(
+        lng === 'ar' 
+          ? 'فشل إنشاء المشروع. يرجى المحاولة مرة أخرى.' 
+          : 'Failed to create project. Please try again.'
+      )
     } finally {
       setLoading(false)
     }
   }
 
   const handleClose = () => {
-    setFormData({
-      title: { en: '', ar: '' },
-      description: { en: '', ar: '' },
-      image: ''
-    })
+    reset()
     setImagePreview('')
     setSelectedFile(null)
+    setImageUrl('')
     onClose()
   }
 
@@ -184,7 +198,7 @@ export default function AddProjectModal({ isOpen, onClose, onAdd, lng }) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Project Image *
@@ -201,7 +215,7 @@ export default function AddProjectModal({ isOpen, onClose, onAdd, lng }) {
               </div>
             )}
 
-            <div className="space-y-3">
+            <div className="space-y-3 upload-image-input">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -226,75 +240,48 @@ export default function AddProjectModal({ isOpen, onClose, onAdd, lng }) {
                   </span>
                 )}
               </div>
-
-              {selectedFile && (
-                <button
-                  type="button"
-                  onClick={handleImageUpload}
-                  disabled={uploading}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#FAB000] text-white rounded-lg hover:bg-[#E19F00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <FiImage className="w-4 h-4" />
-                  {uploading ? 'Uploading...' : 'Upload Image'}
-                </button>
-              )}
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title (English) *
-            </label>
-            <input
-              type="text"
-              value={formData.title.en}
-              onChange={(e) => handleChange('title', e.target.value, 'en')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent"
-              placeholder="Project title in English"
-              required
-            />
-          </div>
+          <Input
+            id="titleEn"
+            type="text"
+            label="Title (English) *"
+            placeholder="Project title in English"
+            error={errors.titleEn?.message}
+            {...register('titleEn')}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title (Arabic)
-            </label>
-            <input
-              type="text"
-              value={formData.title.ar}
-              onChange={(e) => handleChange('title', e.target.value, 'ar')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent"
-              placeholder="عنوان المشروع بالعربية"
-              dir="rtl"
-            />
-          </div>
+          <Input
+            id="titleAr"
+            type="text"
+            label="Title (Arabic) *"
+            placeholder="عنوان المشروع بالعربية"
+            error={errors.titleAr?.message}
+            dir="rtl"
+            {...register('titleAr')}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description (English)
-            </label>
-            <textarea
-              value={formData.description.en}
-              onChange={(e) => handleChange('description', e.target.value, 'en')}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent resize-none"
-              placeholder="Project description in English"
-            />
-          </div>
+          <Input
+            id="descriptionEn"
+            type="textarea"
+            label="Description (English) *"
+            placeholder="Project description in English"
+            error={errors.descriptionEn?.message}
+            rows={4}
+            {...register('descriptionEn')}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description (Arabic)
-            </label>
-            <textarea
-              value={formData.description.ar}
-              onChange={(e) => handleChange('description', e.target.value, 'ar')}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent resize-none"
-              placeholder="وصف المشروع بالعربية"
-              dir="rtl"
-            />
-          </div>
+          <Input
+            id="descriptionAr"
+            type="textarea"
+            label="Description (Arabic) *"
+            placeholder="وصف المشروع بالعربية"
+            error={errors.descriptionAr?.message}
+            rows={4}
+            dir="rtl"
+            {...register('descriptionAr')}
+          />
 
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
             <button
