@@ -1,51 +1,59 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { FiX, FiUpload, FiImage } from 'react-icons/fi'
+import { FiX, FiUpload } from 'react-icons/fi'
 import { supabase } from '@/lib/supabase'
 import Image from 'next/image'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import Input from '@/components/ui/Input'
+import { toast } from 'react-toastify'
+
+const projectSchema = z.object({
+  titleEn: z.string().min(1, 'English title is required'),
+  titleAr: z.string().min(1, 'Arabic title is required'),
+  descriptionEn: z.string().min(1, 'English description is required'),
+  descriptionAr: z.string().min(1, 'Arabic description is required'),
+})
 
 export default function EditProjectModal({ project, isOpen, onClose, onSave, lng }) {
-  const [formData, setFormData] = useState({
-    title: { en: '', ar: '' },
-    description: { en: '', ar: '' },
-    image: ''
-  })
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [imagePreview, setImagePreview] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
+  const [imageUrl, setImageUrl] = useState('')
   const fileInputRef = useRef(null)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+  } = useForm({
+    resolver: zodResolver(projectSchema),
+    defaultValues: {
+      titleEn: '',
+      titleAr: '',
+      descriptionEn: '',
+      descriptionAr: '',
+    },
+  })
 
   useEffect(() => {
     if (project && isOpen) {
       const imageUrl = project.image || ''
-      setFormData({
-        title: typeof project.title === 'object' ? project.title : { en: project.title || '', ar: '' },
-        description: typeof project.description === 'object' ? project.description : { en: project.description || '', ar: '' },
-        image: imageUrl
-      })
+      setValue('titleEn', project.title.en || '')
+      setValue('titleAr', project.title.ar || '')
+      setValue('descriptionEn', project.description.en || '')
+      setValue('descriptionAr', project.description.ar || '')
+      
+      setImageUrl(imageUrl)
       setImagePreview(imageUrl)
       setSelectedFile(null)
     }
-  }, [project, isOpen])
-
-  const handleChange = (field, value, lang = null) => {
-    if (lang) {
-      setFormData(prev => ({
-        ...prev,
-        [field]: {
-          ...prev[field],
-          [lang]: value
-        }
-      }))
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        [field]: value
-      }))
-    }
-  }
+  }, [project, isOpen, setValue])
 
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0]
@@ -55,6 +63,7 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
         return
       }
       
+      // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         alert('Image size should be less than 5MB')
         return
@@ -62,6 +71,7 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
 
       setSelectedFile(file)
       
+      // Create preview
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result)
@@ -75,9 +85,11 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
 
     setUploading(true)
     try {
+      // Generate unique filename
       const fileExt = selectedFile.name.split('.').pop()
-      const fileName = `projects/${project.id}_${Date.now()}.${fileExt}`
+      const fileName = `${project.id}_${Date.now()}.${fileExt}`
       
+      // Upload to Supabase storage
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('projects')
         .upload(fileName, selectedFile, {
@@ -88,6 +100,7 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
       let imageUrl = ''
 
       if (uploadError) {
+        // If bucket doesn't exist or upload fails, try 'images' bucket
         const { data: altUploadData, error: altUploadError } = await supabase.storage
           .from('images')
           .upload(fileName, selectedFile, {
@@ -99,12 +112,14 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
           throw altUploadError
         }
 
+        // Get public URL
         const { data: urlData } = supabase.storage
           .from('images')
           .getPublicUrl(fileName)
         
         imageUrl = urlData.publicUrl
       } else {
+        // Get public URL
         const { data: urlData } = supabase.storage
           .from('projects')
           .getPublicUrl(fileName)
@@ -112,7 +127,7 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
         imageUrl = urlData.publicUrl
       }
 
-      setFormData(prev => ({ ...prev, image: imageUrl }))
+      setImageUrl(imageUrl)
       setSelectedFile(null)
       return imageUrl
     } catch (error) {
@@ -124,29 +139,58 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
     }
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
+  const onSubmit = async (data) => {
     setLoading(true)
     
     try {
-      let finalFormData = { ...formData }
+      let finalImageUrl = imageUrl
       
       if (selectedFile) {
-        const imageUrl = await handleImageUpload()
-        if (imageUrl) {
-          finalFormData = { ...finalFormData, image: imageUrl }
+        const uploadedUrl = await handleImageUpload()
+        if (uploadedUrl) {
+          finalImageUrl = uploadedUrl
         }
       }
       
-      await onSave(project.id, finalFormData)
+      const formData = {
+        title: {
+          en: data.titleEn,
+          ar: data.titleAr || ''
+        },
+        description: {
+          en: data.descriptionEn || '',
+          ar: data.descriptionAr || ''
+        },
+        image: finalImageUrl
+      }
+
+      await onSave(project.id, formData)
+      
+      toast.success(
+        lng === 'ar' 
+          ? 'تم تحديث المشروع بنجاح!' 
+          : 'Project updated successfully!'
+      )
+      
       onClose()
     } catch (error) {
       console.error('Error saving project:', error)
-      alert('Failed to save project')
+      toast.error(
+        lng === 'ar' 
+          ? 'فشل تحديث المشروع. يرجى المحاولة مرة أخرى.' 
+          : 'Failed to update project. Please try again.'
+      )
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleClose = () => {
+    reset()
+    setImagePreview('')
+    setSelectedFile(null)
+    setImageUrl('')
+    onClose()
   }
 
   if (!isOpen) return null
@@ -154,16 +198,17 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div
         className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-900">Edit Project</h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Close modal"
           >
@@ -171,12 +216,15 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+          {/* Image Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Project Image
             </label>
             
+            {/* Image Preview */}
             {imagePreview && (
               <div className="mb-4 relative w-full h-48 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
                 <Image
@@ -188,7 +236,8 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
               </div>
             )}
 
-            <div className="space-y-3">
+            {/* File Input */}
+            <div className="space-y-3 upload-image-input">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -213,80 +262,54 @@ export default function EditProjectModal({ project, isOpen, onClose, onSave, lng
                   </span>
                 )}
               </div>
-
-              {selectedFile && (
-                <button
-                  type="button"
-                  onClick={handleImageUpload}
-                  disabled={uploading}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#FAB000] text-white rounded-lg hover:bg-[#E19F00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <FiImage className="w-4 h-4" />
-                  {uploading ? 'Uploading...' : 'Upload Image'}
-                </button>
-              )}
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title (English)
-            </label>
-            <input
-              type="text"
-              value={formData.title.en}
-              onChange={(e) => handleChange('title', e.target.value, 'en')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent"
-              placeholder="Project title in English"
-              required
-            />
-          </div>
+          <Input
+            id="titleEn"
+            type="text"
+            label="Title (English) *"
+            placeholder="Project title in English"
+            error={errors.titleEn?.message}
+            {...register('titleEn')}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title (Arabic)
-            </label>
-            <input
-              type="text"
-              value={formData.title.ar}
-              onChange={(e) => handleChange('title', e.target.value, 'ar')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent"
-              placeholder="عنوان المشروع بالعربية"
-              dir="rtl"
-            />
-          </div>
+          <Input
+            id="titleAr"
+            type="text"
+            label="Title (Arabic) *"
+            placeholder="عنوان المشروع بالعربية"
+            error={errors.titleAr?.message}
+            dir="rtl"
+            {...register('titleAr')}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description (English)
-            </label>
-            <textarea
-              value={formData.description.en}
-              onChange={(e) => handleChange('description', e.target.value, 'en')}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent resize-none"
-              placeholder="Project description in English"
-            />
-          </div>
+          <Input
+            id="descriptionEn"
+            type="textarea"
+            label="Description (English) *"
+            placeholder="Project description in English"
+            error={errors.descriptionEn?.message}
+            rows={4}
+            {...register('descriptionEn')}
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description (Arabic)
-            </label>
-            <textarea
-              value={formData.description.ar}
-              onChange={(e) => handleChange('description', e.target.value, 'ar')}
-              rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FAB000] focus:border-transparent resize-none"
-              placeholder="وصف المشروع بالعربية"
-              dir="rtl"
-            />
-          </div>
+          <Input
+            id="descriptionAr"
+            type="textarea"
+            label="Description (Arabic) *"
+            placeholder="وصف المشروع بالعربية"
+            error={errors.descriptionAr?.message}
+            rows={4}
+            dir="rtl"
+            {...register('descriptionAr')}
+          />
 
+          {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="px-6 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
               disabled={loading}
             >
