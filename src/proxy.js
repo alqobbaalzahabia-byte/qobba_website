@@ -5,7 +5,7 @@ import { fallbackLng, languages, cookieName } from './app/i18n/settings'
 acceptLanguage.languages(languages)
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)']
+  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest|sitemap.xml).*)']
 }
 
 export function proxy(req) {
