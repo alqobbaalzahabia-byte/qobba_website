@@ -232,8 +232,8 @@
       "title": "Dashboard",
       "services": "Services",
       "projects": "Projects",
-      "blogs": "Blogs",
       "aboutUs": "About Us",
+      "team": "Team",
       "logout": "Logout"
     }
   },

@@ -10,7 +10,7 @@ import {
   FaBlog,
   FaInfoCircle,
   FaSignOutAlt,
-  FaUser,
+  FaUsers,
 } from "react-icons/fa";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 import AuthMiddleware from "@/components/auth/AuthMiddleware";
@@ -31,8 +31,9 @@ export default function DashboardLayout({ children, params }) {
   const navItems = [
     { label: t('dashboard.sidebar.services'), href: "/services", icon: <FaTools /> },
     { label: t('dashboard.sidebar.projects'), href: "/projects", icon: <FaFolder /> },
-    { label: t('dashboard.sidebar.blogs'), href: "/blogs", icon: <FaBlog /> },
+    // { label: t('dashboard.sidebar.blogs'), href: "/blogs", icon: <FaBlog /> },
     { label: t('dashboard.sidebar.aboutUs'), href: "/about-us", icon: <FaInfoCircle /> },
+    { label: t('dashboard.sidebar.team'), href: "/team", icon: <FaUsers /> },
   ];
 
   const toggleSidebar = () => {
