@@ -54,19 +54,20 @@ export default function ServiceCard({ service, lng, onEdit, onDelete }) {
 
         {/* Dropdown menu */}
         {isMenuOpen && (
-          <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+          <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl border border-gray-200 py-1 z-20 animate-fade-in">
             <button
               onClick={handleEdit}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 transition-colors"
+              className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3 transition-colors"
             >
-              <FiEdit className="text-gray-500" />
-              Edit
+              <FiEdit className="text-gray-500 w-4 h-4" />
+              Edit Service
             </button>
+            <div className="border-t border-gray-100 my-1"></div>
             <button
               onClick={handleDelete}
-              className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors"
+              className="w-full px-4 py-2.5 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
             >
-              <FiTrash2 className="text-red-500" />
+              <FiTrash2 className="text-red-500 w-4 h-4" />
               Delete
             </button>
           </div>
