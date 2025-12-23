@@ -12,7 +12,8 @@ import {
   FaSignOutAlt,
   FaUsers,
   FaStar,
-  FaEnvelope
+  FaEnvelope,
+  FaFileContract
 } from "react-icons/fa";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 import AuthMiddleware from "@/components/auth/AuthMiddleware";
@@ -38,6 +39,7 @@ export default function DashboardLayout({ children, params }) {
     { label: t('dashboard.sidebar.team'), href: "/team", icon: <FaUsers /> },
     { label: t('dashboard.sidebar.reviews'), href: "/reviews", icon: <FaStar /> },
     { label: t('dashboard.sidebar.contact'), href: "/contact", icon: <FaEnvelope /> },
+    { label: t('dashboard.sidebar.legal'), href: "/legal", icon: <FaFileContract /> },
   ];
 
   const toggleSidebar = () => {

@@ -236,6 +236,7 @@
       "team": "Team",
       "reviews": "Reviews",
       "contact": "Contact",
+      "legal":"Legal",
       "logout": "Logout"
     }
   },
