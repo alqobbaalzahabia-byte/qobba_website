@@ -67,7 +67,9 @@ export default function DashboardLayout({ children, params }) {
         >
           <div className={`p-6 ${isSidebarOpen ? "block" : "hidden"}`}>
             <div className="flex items-center justify-between mb-8">
+              <Link href="/dashboard">
               <h1 className="text-2xl font-bold text-[#FAB000]">{t('dashboard.sidebar.title')}</h1>
+              </Link>
               <button
                 onClick={toggleSidebar}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

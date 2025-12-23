@@ -17,6 +17,12 @@ export default async function ContactPage({ params }) {
     .select('*')
     .order('created_at', { ascending: false })
 
+  const { data: socialLinksData, error: socialLinksError } = await supabase
+    .from('social_links')
+    .select('*')
+    .limit(1)
+    .single()
+
   // Count unread messages
   const unreadCount = messages?.filter(msg => !msg.is_read).length || 0
 
@@ -38,8 +44,10 @@ export default async function ContactPage({ params }) {
       <ContactManagement 
         contactInfo={contactInfo} 
         messages={messages}
+        socialLinks={socialLinksData}
         contactError={contactError}
         messagesError={messagesError}
+        socialLinksError={socialLinksError}
         lng={lng} 
       />
     </div>

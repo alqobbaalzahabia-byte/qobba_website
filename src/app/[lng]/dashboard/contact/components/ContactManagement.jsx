@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { FiSettings, FiMail } from 'react-icons/fi'
+import { FaShareAlt } from 'react-icons/fa'
 import ContactInfoSettings from './ContactInfoSettings'
 import MessagesList from './MessagesList'
-
-export default function ContactManagement({ contactInfo, messages, contactError, messagesError, lng }) {
+import SocialLinksSettings from './SocialLinksSettings'
+export default function ContactManagement({ contactInfo, messages,socialLinks, contactError, messagesError,socialLinksError, lng }) {
   const [activeTab, setActiveTab] = useState('messages') // 'messages' or 'settings'
 
   const unreadCount = messages?.filter(msg => !msg.is_read).length || 0
@@ -47,15 +48,30 @@ export default function ContactManagement({ contactInfo, messages, contactError,
             <FiSettings className="w-5 h-5" />
             <span>Contact Information</span>
           </button>
+          <button
+            onClick={() => setActiveTab('social')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+              activeTab === 'social'
+                ? 'bg-[#FAB000] text-white shadow-md'
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            <FaShareAlt className="w-5 h-5" />
+            <span>Social Media</span>
+          </button>
         </div>
       </div>
 
       {/* Content */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        {activeTab === 'messages' ? (
+        {activeTab === 'messages' && (
           <MessagesList messages={messages} error={messagesError} lng={lng} />
-        ) : (
+        )}
+        {activeTab === 'settings' && (
           <ContactInfoSettings contactInfo={contactInfo} error={contactError} lng={lng} />
+        )}
+        {activeTab === 'social' && (
+          <SocialLinksSettings socialLinks={socialLinks} error={socialLinksError} lng={lng} />
         )}
       </div>
     </div>
