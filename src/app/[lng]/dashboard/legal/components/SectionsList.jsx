@@ -3,29 +3,32 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import ServiceCard from './ServiceCard'
-import EditServiceModal from './EditServiceModal'
-import AddServiceModal from './AddServiceModal'
+import SectionCard from './SectionCard'
+import EditSectionModal from './EditSectionModal'
+import AddSectionModal from './AddSectionModal'
 import { FiPlus, FiX, FiAlertTriangle } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 
-export default function ServicesList({ services, error, lng }) {
+export default function SectionsList({ sections, error, lng, type }) {
   const router = useRouter()
-  const [editingService, setEditingService] = useState(null)
+  const [editingSection, setEditingSection] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [serviceToDelete, setServiceToDelete] = useState(null)
+  const [sectionToDelete, setSectionToDelete] = useState(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const handleEdit = (service) => {
-    setEditingService(service)
+  const tableName = type === 'terms' ? 'terms' : 'privacy'
+  const displayName = type === 'terms' ? 'Terms & Conditions' : 'Privacy Policy'
+
+  const handleEdit = (section) => {
+    setEditingSection(section)
     setIsModalOpen(true)
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
-    setEditingService(null)
+    setEditingSection(null)
   }
 
   const handleCloseAddModal = () => {
@@ -35,86 +38,82 @@ export default function ServicesList({ services, error, lng }) {
   const handleAdd = async (formData) => {
     try {
       const { data, error } = await supabase
-        .from('services')
+        .from(tableName)
         .insert([{
           title: formData.title,
-          description: formData.description,
-          image: formData.image,
-          created_at: new Date().toISOString()
+          content: formData.content,
         }])
         .select()
         .single()
 
       if (error) {
-        throw new Error(error.message || 'Failed to add service')
+        throw new Error(error.message || 'Failed to add section')
       }
 
       router.refresh()
     } catch (error) {
-      console.error('Error adding service:', error)
+      console.error('Error adding section:', error)
       throw error
     }
   }
 
-  const handleSave = async (serviceId, formData) => {
+  const handleSave = async (sectionId, formData) => {
     try {
       const { data, error } = await supabase
-        .from('services')
+        .from(tableName)
         .update({
           title: formData.title,
-          description: formData.description,
-          image: formData.image,
-          // created_at: new Date().toISOString()
+          content: formData.content,
         })
-        .eq('id', serviceId)
+        .eq('id', sectionId)
         .select()
         .single()
 
       if (error) {
-        throw new Error(error.message || 'Failed to update service')
+        throw new Error(error.message || 'Failed to update section')
       }
 
       router.refresh()
     } catch (error) {
-      console.error('Error updating service:', error)
+      console.error('Error updating section:', error)
       throw error
     }
   }
 
-  const handleDeleteClick = (service) => {
-    setServiceToDelete(service)
+  const handleDeleteClick = (section) => {
+    setSectionToDelete(section)
     setIsDeleteModalOpen(true)
   }
 
   const handleDeleteConfirm = async () => {
-    if (!serviceToDelete) return
+    if (!sectionToDelete) return
 
     setIsDeleting(true)
     try {
       const { error } = await supabase
-        .from('services')
+        .from(tableName)
         .delete()
-        .eq('id', serviceToDelete.id)
+        .eq('id', sectionToDelete.id)
 
       if (error) {
-        throw new Error(error.message || 'Failed to delete service')
+        throw new Error(error.message || 'Failed to delete section')
       }
 
       toast.success(
         lng === 'ar' 
-          ? 'تم حذف الخدمة بنجاح!' 
-          : 'Service deleted successfully!'
+          ? 'تم حذف القسم بنجاح!' 
+          : 'Section deleted successfully!'
       )
 
       setIsDeleteModalOpen(false)
-      setServiceToDelete(null)
+      setSectionToDelete(null)
       router.refresh()
     } catch (error) {
-      console.error('Error deleting service:', error)
+      console.error('Error deleting section:', error)
       toast.error(
         lng === 'ar' 
-          ? 'فشل حذف الخدمة. يرجى المحاولة مرة أخرى.' 
-          : 'Failed to delete service. Please try again.'
+          ? 'فشل حذف القسم. يرجى المحاولة مرة أخرى.' 
+          : 'Failed to delete section. Please try again.'
       )
     } finally {
       setIsDeleting(false)
@@ -123,52 +122,60 @@ export default function ServicesList({ services, error, lng }) {
 
   const handleDeleteCancel = () => {
     setIsDeleteModalOpen(false)
-    setServiceToDelete(null)
+    setSectionToDelete(null)
   }
 
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-500">Error loading services</p>
+        <p className="text-red-500">Error loading sections</p>
       </div>
     )
   }
 
   return (
     <>
-      <div className="mb-6 flex justify-end">
+      {/* Header */}
+      <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">{displayName}</h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Manage sections and content for {displayName.toLowerCase()}
+          </p>
+        </div>
+
         <button
           onClick={() => setIsAddModalOpen(true)}
           className="flex items-center gap-2 px-6 py-3 bg-[#FAB000] text-white font-semibold rounded-lg hover:bg-[#E19F00] transition-colors shadow-md hover:shadow-lg"
         >
           <FiPlus className="w-5 h-5" />
-          Add New Service
+          Add New Section
         </button>
       </div>
 
-      {services?.length === 0 ? (
+      {sections?.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
           <div className="flex flex-col items-center gap-3">
             <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
               <FiPlus className="w-8 h-8 text-gray-400" />
             </div>
-            <p className="text-gray-500 text-lg font-medium">No services found</p>
-            <p className="text-gray-400 text-sm">Get started by adding your first service</p>
+            <p className="text-gray-500 text-lg font-medium">No sections found</p>
+            <p className="text-gray-400 text-sm">Get started by adding your first section</p>
             <button
               onClick={() => setIsAddModalOpen(true)}
               className="mt-4 flex items-center gap-2 px-6 py-2 bg-[#FAB000] text-white font-semibold rounded-lg hover:bg-[#E19F00] transition-colors"
             >
               <FiPlus className="w-4 h-4" />
-              Add Service
+              Add Section
             </button>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
+        <div className="space-y-4">
+          {sections.map((section) => (
+            <SectionCard
+              key={section.id}
+              section={section}
               lng={lng}
               onEdit={handleEdit}
               onDelete={handleDeleteClick}
@@ -177,27 +184,26 @@ export default function ServicesList({ services, error, lng }) {
         </div>
       )}
 
-      {/* Add Modal */}
-      <AddServiceModal
+      <AddSectionModal
         isOpen={isAddModalOpen}
         onClose={handleCloseAddModal}
         onAdd={handleAdd}
         lng={lng}
+        type={type}
       />
 
-      {/* Edit Modal */}
-      {editingService && (
-        <EditServiceModal
-          service={editingService}
+      {editingSection && (
+        <EditSectionModal
+          section={editingSection}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onSave={handleSave}
           lng={lng}
+          type={type}
         />
       )}
 
-      {/* Delete Confirmation Modal */}
-      {isDeleteModalOpen && serviceToDelete && (
+      {isDeleteModalOpen && sectionToDelete && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
           onClick={handleDeleteCancel}
@@ -228,8 +234,8 @@ export default function ServicesList({ services, error, lng }) {
             <div className="p-6">
               <p className="text-gray-700 mb-6">
                 {lng === 'ar' 
-                  ? `هل أنت متأكد من حذف "${serviceToDelete.title?.[lng] || serviceToDelete.title || 'هذه الخدمة'}"؟ لا يمكن التراجع عن هذا الإجراء.`
-                  : `Are you sure you want to delete "${serviceToDelete.title?.[lng] || serviceToDelete.title || 'this service'}"? This action cannot be undone.`
+                  ? `هل أنت متأكد من حذف "${sectionToDelete.title?.[lng] || sectionToDelete.title?.en || 'هذا القسم'}"؟ لا يمكن التراجع عن هذا الإجراء.`
+                  : `Are you sure you want to delete "${sectionToDelete.title?.[lng] || sectionToDelete.title?.en || 'this section'}"? This action cannot be undone.`
                 }
               </p>
 
@@ -261,4 +267,3 @@ export default function ServicesList({ services, error, lng }) {
     </>
   )
 }
-

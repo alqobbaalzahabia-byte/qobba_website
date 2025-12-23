@@ -11,6 +11,9 @@ import {
   FaInfoCircle,
   FaSignOutAlt,
   FaUsers,
+  FaStar,
+  FaEnvelope,
+  FaFileContract
 } from "react-icons/fa";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 import AuthMiddleware from "@/components/auth/AuthMiddleware";
@@ -34,6 +37,9 @@ export default function DashboardLayout({ children, params }) {
     // { label: t('dashboard.sidebar.blogs'), href: "/blogs", icon: <FaBlog /> },
     { label: t('dashboard.sidebar.aboutUs'), href: "/about-us", icon: <FaInfoCircle /> },
     { label: t('dashboard.sidebar.team'), href: "/team", icon: <FaUsers /> },
+    { label: t('dashboard.sidebar.reviews'), href: "/reviews", icon: <FaStar /> },
+    { label: t('dashboard.sidebar.contact'), href: "/contact", icon: <FaEnvelope /> },
+    { label: t('dashboard.sidebar.legal'), href: "/legal", icon: <FaFileContract /> },
   ];
 
   const toggleSidebar = () => {
@@ -61,7 +67,9 @@ export default function DashboardLayout({ children, params }) {
         >
           <div className={`p-6 ${isSidebarOpen ? "block" : "hidden"}`}>
             <div className="flex items-center justify-between mb-8">
+              <Link href="/dashboard">
               <h1 className="text-2xl font-bold text-[#FAB000]">{t('dashboard.sidebar.title')}</h1>
+              </Link>
               <button
                 onClick={toggleSidebar}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

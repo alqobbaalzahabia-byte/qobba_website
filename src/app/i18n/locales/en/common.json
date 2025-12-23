@@ -234,6 +234,9 @@
       "projects": "Projects",
       "aboutUs": "About Us",
       "team": "Team",
+      "reviews": "Reviews",
+      "contact": "Contact",
+      "legal":"Legal",
       "logout": "Logout"
     }
   },

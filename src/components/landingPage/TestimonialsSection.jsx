@@ -22,6 +22,7 @@ const TestimonialsSection = ({ t, lng }) => {
       const { data, error } = await supabase
         .from('testimonials')
         .select('*')
+        .eq('is_approved', true)
         .order('created_at', { ascending: false });
 
       if (error) {
