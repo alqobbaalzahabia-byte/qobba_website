@@ -69,6 +69,9 @@
     "title": "Pricing Plans for Everyone",
     "subtitle": "Choose the plan that suits you and benefit from our great features without complications.",
     "serviceType": "Service Type",
+    "contactSales": "Contact Sales",
+    "customPricing": "Custom pricing for your needs",
+    "contactUs": "Contact Us",
     "premium": {
       "title": "Premium Package",
       "price": "200",
@@ -83,6 +86,7 @@
         "pricePage": "Price Page (Free)"
       },
       "select": "Select Package"
+
     },
     "basic": {
       "title": "Basic Package",
@@ -237,6 +241,7 @@
       "reviews": "Reviews",
       "contact": "Contact",
       "legal":"Legal",
+      "plans":"Plans",
       "logout": "Logout"
     }
   },
