@@ -51,7 +51,7 @@ const App = ({ params }) => {
       <TestimonialsSection t={t} lng={lng} />
 
       {/* ChatBot Component */}
-      {/* <ChatBot lng={lng} /> */}
+      <ChatBot lng={lng} />
 
     </div>
   );

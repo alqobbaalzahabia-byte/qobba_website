@@ -153,7 +153,39 @@
     "openChat": "Open chat",
     "notVerifiedMessage": "Please verify your email to use the chatbot.",
     "enterEmailToVerify": "Enter your email to verify",
-    "tryAgain": "Please try again"
+    "tryAgain": "Please try again",
+
+    "open_chat": "Open chat",
+    "chat_assistant": "💬 Chat Assistant",
+    "verify_email": "📧 Verify Email",
+    "verified_ready": "Verified • Ready to help 24/7",
+    "enter_email_for_code": "Enter email to get verification code",
+    "bot_greeting": "Hello! 👋 I'm your virtual assistant and I'm here to help. How can I assist you today?",
+    "enter_verification_code": "Enter the 6-digit verification code sent to your email",
+    "hi_enter_email": "Hi! Please enter your email to receive a verification code and start chatting.",
+    "your_name_optional": "Your name (optional)",
+    "enter_your_email": "Enter your email",
+    "enter_6_digit_code_sent_to": "Enter the 6-digit code sent to:",
+    "use_different_email": "← Use different email",
+    "type_your_message": "Type your message...",
+    "type_agent_human": "Type 'agent' to speak with a human",
+    "responses": {
+      "agent_request": "I'll connect you with a human agent right away! 👨‍💼\n\nA team member will join this chat shortly to assist you personally. In the meantime, feel free to describe your inquiry in detail so they can help you more efficiently when they arrive.\n\nTypical response time: 2-5 minutes during business hours.",
+      "acknowledgment_yes": "Great! How can I help you further? 😊",
+      "acknowledgment_no": "No problem! Is there something else I can help you with? 😊",
+      "clarification_needed": "I want to make sure I understand your question correctly. 🤔\n\n**I can help you with:**\n• Product information\n• Pricing and payment options\n• Order status and tracking\n• Returns and refunds\n• Technical support\n• Business hours and contact details\n\nCould you rephrase your question or choose one of the topics above?\n\n💡 **Tip:** Type 'agent' to speak directly with a human representative!"
+    },
+    "messages": {
+      "valid_email": "Please enter a valid email address",
+      "welcome_back": "Welcome back! You can now start chatting.",
+      "failed_create_account": "Failed to create account. Please try again.",
+      "verification_sent_dev": "Verification code sent! For development: Your code is ${code}",
+      "error_occurred": "An error occurred. Please try again.",
+      "enter_verification_code_error": "Please enter the verification code",
+      "email_verified": "Email verified! You can now start chatting.",
+      "invalid_code": "❌ Invalid verification code. Please try again.",
+      "verification_failed": "Verification failed. Please try again."
+    }
   },
   "clients": {
     "title": "Our Clients",
